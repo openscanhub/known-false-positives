@@ -1,2 +1,746 @@
 
+Error: INTEGER_OVERFLOW (CWE-190):
+bash-5.2/lib/readline/text.c:1442: tainted_data_return: Called function "_rl_find_next_mbchar(rl_line_buffer, start, 1, 1)", and a possible return value may be less than zero.
+bash-5.2/lib/readline/text.c:1442: assign: Assigning: "next" = "(__ctype_get_mb_cur_max() > 1UL && rl_byte_oriented == 0) ? _rl_find_next_mbchar(rl_line_buffer, start, 1, 1) : (start + 1)".
+bash-5.2/lib/readline/text.c:1447: assign: Assigning: "start" = "next".
+bash-5.2/lib/readline/text.c:1469: overflow: The expression "end - start" is considered to have possibly overflowed.
+bash-5.2/lib/readline/text.c:1469: overflow_sink: "end - start", which might be negative, is passed to "mbrtowc(&wc, rl_line_buffer + start, end - start, &mps)".
+# 1467|         else
+# 1468|   	{
+# 1469|-> 	  m = MBRTOWC (&wc, rl_line_buffer + start, end - start, &mps);
+# 1470|   	  if (MB_INVALIDCH (m))
+# 1471|   	    wc = (WCHAR_T)rl_line_buffer[start];
+# start' and 'end' are swapped at line 1428, so this condition would not happen.
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/subst.c:2142: alloc_fn: Storage is returned from allocation function "extract_dollar_brace_string".
+bash-5.2/subst.c:2142: var_assign: Assigning: "temp" = storage returned from "extract_dollar_brace_string(ss, &si, 0, 1)".
+bash-5.2/subst.c:2136: leaked_storage: Variable "temp" going out of scope leaks the storage it points to.
+# 2134|   	  si = i + 2;
+# 2135|   	  if (string[si] == '\0')
+# 2136|-> 	    CQ_RETURN(si);
+# 2137|   
+# 2138|   	  /* XXX - extract_command_subst here? */
+# SX_NOALLOC' is set in the call to 'extract_dollar_brace_string()', so no memory is allocated.
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/subst.c:5689: alloc_arg: "xdupmbstowcs" allocates memory that is stored into "indices".
+bash-5.2/subst.c:5693: leaked_storage: Variable "indices" going out of scope leaks the storage it points to.
+# 5691|   	{
+# 5692|   	  free (wpat);
+# 5693|-> 	  return (match_upattern (string, pat, mtype, sp, ep));
+# 5694|   	}
+# 5695|         ret = match_wpattern (wstring, indices, n, wpat, mtype, sp, ep);
+# It returns when function has failed, so no memory should be allocated
+
+
+Error: UNINIT (CWE-457):
+bash-5.2/trap.c:306: var_decl: Declaring variable "save_return_catch" without initializer.
+bash-5.2/trap.c:469: uninit_use_in_call: Using uninitialized element of array "save_return_catch" when calling "xbcopy".
+#  467|   		  return_catch_flag = save_return_catch_flag;
+#  468|   		  return_catch_value = x;
+#  469|-> 		  COPY_PROCENV (save_return_catch, return_catch);
+#  470|   		  if (function_code)
+#  471|   		    {
+# Variable is initialized later before its used.
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/subst.c:1590: alloc_fn: Storage is returned from allocation function "string_extract_single_quoted".
+bash-5.2/subst.c:1590: var_assign: Assigning: "t" = storage returned from "string_extract_single_quoted(string, &si, 1)".
+bash-5.2/subst.c:1791: leaked_storage: Variable "t" going out of scope leaks the storage it points to.
+# 1789|   	{
+# 1790|   	  *sindex = i;
+# 1791|-> 	  return ((char *)NULL);
+# 1792|   	}
+# 1793|       }
+# SX_NOALLOC' (last argument is 1) is set in call to 'string_extract_single_quoted()'
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/lib/glob/glob.c:865: alloc_fn: Storage is returned from allocation function "sh_makepath".
+bash-5.2/lib/glob/glob.c:865: var_assign: Assigning: "subdir" = storage returned from "sh_makepath(dir, dp->d_name, pflags)".
+bash-5.2/lib/glob/glob.c:866: noescape: Resource "subdir" is not freed or pointed-to in "glob_testdir".
+bash-5.2/lib/glob/glob.c:1027: leaked_storage: Variable "subdir" going out of scope leaks the storage it points to.
+# 1025|         /* Don't call QUIT; here; let higher layers deal with it. */
+# 1026|   
+# 1027|->       return ((char **)NULL);
+# 1028|       }
+# 1029|
+# This may not be reproducible in a real scenario
+
+
+Error: OVERRUN (CWE-119):
+bash-5.2/lib/readline/util.c:566: cond_at_least: Checking "size" implies that "size" is at least 1 on the true branch.
+bash-5.2/lib/readline/util.c:567: overrun-buffer-arg: Overrunning struct type nlmsghdr of 16 bytes by passing it to a function which accesses it at byte offset 16 using argument "size" (which evaluates to 1). [Note: The source code implementation of the function has been overridden by a builtin model.]
+#  565|     req.nlh.nlmsg_seq = 0;
+#  566|     if (size && string)
+#  567|->     memcpy (NLMSG_DATA(&req.nlh), string, size);
+#  568|     memset (&addr, 0, sizeof(addr));
+#  569|
+# I could not verify in what condition this may be true
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/subst.c:5689: alloc_arg: "xdupmbstowcs" allocates memory that is stored into "wstring".
+bash-5.2/subst.c:5693: leaked_storage: Variable "wstring" going out of scope leaks the storage it points to.
+# 5691|   	{
+# 5692|   	  free (wpat);
+# 5693|-> 	  return (match_upattern (string, pat, mtype, sp, ep));
+# 5694|   	}
+# 5695|         ret = match_wpattern (wstring, indices, n, wpat, mtype, sp, ep);
+# Variable n is '-1', so this may not cause a memory leak
+
+
+Error: BAD_FREE (CWE-763):
+bash-5.2/lib/readline/bind.c:486: fnptr_free: "xfree" frees function pointer "map[ic].function".
+#  484|   	    }
+#  485|   	  if (map[ic].type == ISMACR)
+#  486|-> 	    xfree ((char *)map[ic].function);
+#  487|   
+#  488|   	  map[ic].function = KEYMAP_TO_FUNCTION (data);
+# It seems to work as expected
+
+
+Error: OVERRUN (CWE-119):
+bash-5.2/lib/sh/tmpfile.c:72: alias: Assigning: "sys_tmpdir" = ""/tmp"". "sys_tmpdir" now points to byte 0 of ""/tmp"" (which consists of 5 bytes).
+bash-5.2/lib/sh/tmpfile.c:73: overrun-buffer-val: Overrunning buffer pointed to by "sys_tmpdir" of 5 bytes by passing it to a function which accesses it at byte offset 8.
+#   71|   #ifdef P_tmpdir
+#   72|     sys_tmpdir = P_tmpdir;
+#   73|->   if (file_iswdir (sys_tmpdir))
+#   74|       return sys_tmpdir;
+#   75|   #endif
+# I do not see any clear path how this variable is accessed offset 8
+
+
+Error: USE_AFTER_FREE (CWE-416):
+bash-5.2/builtins/cd.def:571: identity_transfer: Passing "t" as argument 1 to function "sh_canonpath", which returns that argument.
+bash-5.2/builtins/cd.def:571: assign: Assigning: "tdir" = "nolinks ? sh_physpath(t, 0) : sh_canonpath(t, 3)".
+bash-5.2/builtins/cd.def:583: freed_arg: "free" frees "tdir".
+bash-5.2/builtins/cd.def:584: use_after_free: Using freed pointer "t".
+#  582|       {
+#  583|         FREE (tdir);
+#  584|->       tdir = t;
+#  585|         canon_failed = 1;
+#  586|       }
+# It only returns the 't' variable if 'PATH_NOALLOC' is set, which is not true in this case
+
+
+Error: INTEGER_OVERFLOW (CWE-190):
+bash-5.2/lib/readline/histexpand.c:225: tainted_data_return: Called function "_rl_get_char_len((char *)string + i, &ps)", and a possible return value may be less than zero.
+bash-5.2/lib/readline/histexpand.c:225: assign: Assigning: "v" = "_rl_get_char_len((char *)string + i, &ps)".
+bash-5.2/lib/readline/histexpand.c:227: overflow: The expression "i" is considered to have possibly overflowed.
+bash-5.2/lib/readline/histexpand.c:244: overflow: The expression "i - local_index" is deemed overflowed because at least one of its arguments has overflowed.
+bash-5.2/lib/readline/histexpand.c:244: assign: Assigning: "which" = "i - local_index".
+bash-5.2/lib/readline/histexpand.c:245: overflow: The expression "1 + which" is deemed underflowed because at least one of its arguments has underflowed.
+bash-5.2/lib/readline/histexpand.c:245: overflow_sink: "1 + which", which might have underflowed, is passed to "xmalloc(1 + which)". [Note: The source code implementation of the function has been overridden by a builtin model.]
+#  243|   
+#  244|     which = i - local_index;
+#  245|->   temp = (char *)xmalloc (1 + which);
+#  246|     if (which)
+#  247|       strncpy (temp, string + local_index, which);
+# There is already a check for return value greater than 1, so this should not happen
+
+
+Error: UNINIT (CWE-457):
+bash-5.2/lib/readline/histfile.c:521: var_decl: Declaring variable "orig_lines" without initializer.
+bash-5.2/lib/readline/histfile.c:646: uninit_use: Using uninitialized value "orig_lines".
+#  644|     FREE (buffer);
+#  645|   
+#  646|->   history_lines_written_to_file = orig_lines - lines;
+#  647|   
+#  648|     if (rv == 0 && filename && tempname)
+# orig_lines' is initialized later
+
+
+Error: UNINIT (CWE-457):
+bash-5.2/bashline.c:1669: var_decl: Declaring variable "e1" without initializer.
+bash-5.2/bashline.c:1687: uninit_use: Using uninitialized value "e1".
+# 1685|   	  if (s > rl_end)
+# 1686|   	    {
+# 1687|-> 	      s1 = s = e1;
+# 1688|   	      break;
+# 1689|   	    }
+# e1' variable is initialized later
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/subst.c:1884: alloc_fn: Storage is returned from allocation function "string_extract".
+bash-5.2/subst.c:1884: var_assign: Assigning: "t" = storage returned from "string_extract(string, &si, "`", flags | 1)".
+bash-5.2/subst.c:1986: leaked_storage: Variable "t" going out of scope leaks the storage it points to.
+# 1984|   	{
+# 1985|   	  *sindex = i;
+# 1986|-> 	  return ((char *)NULL);
+# 1987|   	}
+# 1988|       }
+# SX_NOALLOC' (last argument is 1) is set in call to 'string_extract()'
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/subst.c:1590: alloc_fn: Storage is returned from allocation function "string_extract_single_quoted".
+bash-5.2/subst.c:1590: var_assign: Assigning: "t" = storage returned from "string_extract_single_quoted(string, &si, 1)".
+bash-5.2/subst.c:1798: leaked_storage: Variable "t" going out of scope leaks the storage it points to.
+# 1796|     result[result_index] = '\0';
+# 1797|   
+# 1798|->   return (result);
+# 1799|   }
+# 1800|
+# SX_NOALLOC' (last argument is 1) is set in call to 'string_extract_single_quoted()'
+
+
+Error: UNINIT (CWE-457):
+bash-5.2/lib/readline/text.c:919: var_decl: Declaring variable "mbkey" without initializer.
+bash-5.2/lib/readline/text.c:936: uninit_use_in_call: Using uninitialized value "*mbkey" when calling "rl_insert_text".
+#  934|   #if defined (HANDLE_MULTIBYTE)
+#  935|         if (MB_CUR_MAX > 1 && rl_byte_oriented == 0)
+#  936|-> 	rl_insert_text (mbkey);
+#  937|         else
+#  938|   #endif
+# mbkey' is initialized before this line
+
+
+Error: BAD_FREE (CWE-763):
+bash-5.2/lib/readline/bind.c:174: fnptr_free: "xfree" frees function pointer "_rl_keymap[key].function".
+#  172|       {
+#  173|         if (_rl_keymap[key].type == ISMACR)
+#  174|-> 	xfree ((char *)_rl_keymap[key].function);
+#  175|         _rl_keymap[key].type = ISFUNC;
+#  176|         _rl_keymap[key].function = function;
+# It works as expected
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/trap.c:1087: alloc_fn: Storage is returned from allocation function "xmalloc". [Note: The source code implementation of the function has been overridden by a builtin model.]
+bash-5.2/trap.c:1087: identity_transfer: Passing "xmalloc(1UL + strlen(old_trap))" as argument 1 to function "strcpy", which returns that argument. [Note: The source code implementation of the function has been overridden by a builtin model.]
+bash-5.2/trap.c:1087: var_assign: Assigning: "trap_command" = storage returned from "strcpy(xmalloc(1UL + strlen(old_trap)), old_trap)".
+bash-5.2/trap.c:1179: leaked_storage: Variable "trap_command" going out of scope leaks the storage it points to.
+# 1177|       }
+# 1178|   
+# 1179|->   return trap_exit_value;
+# 1180|   }
+# 1181|
+# It should be free'd before this line
+
+
+Error: UNINIT (CWE-457):
+bash-5.2/subst.c:7990: var_decl: Declaring variable "t" without initializer.
+bash-5.2/subst.c:8025: uninit_use: Using uninitialized value "t".
+# 8023|   	  break;
+# 8024|   	}
+# 8025|->       number = STRLEN (t);
+# 8026|         FREE (t);
+# 8027|       }
+# This should not happen in a real scenario
+
+
+Error: USE_AFTER_FREE (CWE-416):
+bash-5.2/arrayfunc.c:858: freed_arg: "bind_assoc_var_internal" frees "akey".
+bash-5.2/arrayfunc.c:858: deref_arg: Calling "bind_assoc_var_internal" dereferences freed pointer "akey".
+#  856|   	this_command_name = (char *)NULL;	/* no command name for errors */
+#  857|         if (assoc_p (var))
+#  858|-> 	bind_assoc_var_internal (var, nhash, akey, val, iflags);
+#  859|         else
+#  860|   	bind_array_var_internal (var, ind, akey, val, iflags);
+# I do not see how 'bind_assoc_var_internal()' function free's 'akey' variable
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/execute_cmd.c:4521: alloc_fn: Storage is returned from allocation function "expand_words".
+bash-5.2/execute_cmd.c:4521: var_assign: Assigning: "words" = storage returned from "expand_words(simple_command->words)".
+bash-5.2/execute_cmd.c:4553: noescape: Resource "words" is not freed or pointed-to in "xtrace_print_word_list".
+bash-5.2/execute_cmd.c:4614: var_assign: Assigning: "disposer" = "words".
+bash-5.2/execute_cmd.c:4616: noescape: Resource "words" is not freed or pointed-to in "check_command_builtin".
+bash-5.2/execute_cmd.c:4638: leaked_storage: Variable "disposer" going out of scope leaks the storage it points to.
+# 4636|   	}        
+# 4637|         builtin = 0;
+# 4638|->     }
+# 4639|   
+# 4640|     add_unwind_protect (dispose_words, words);
+# words' is later free'd thourhg 'dispose_words' function. See line 4640.
+
+
+Error: USE_AFTER_FREE (CWE-416):
+bash-5.2/builtins/cd.def:571: identity_transfer: Passing "t" as argument 1 to function "sh_canonpath", which returns that argument.
+bash-5.2/builtins/cd.def:571: assign: Assigning: "tdir" = "nolinks ? sh_physpath(t, 0) : sh_canonpath(t, 3)".
+bash-5.2/builtins/cd.def:580: freed_arg: "free" frees "t".
+bash-5.2/builtins/cd.def:628: use_after_free: Using freed pointer "tdir".
+#  626|   #endif
+#  627|       {
+#  628|->       r = chdir (nolinks ? newdir : tdir);
+#  629|         if (r >= 0)
+#  630|   	resetxattr ();
+# This line may never reach in real scenario
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/execute_cmd.c:5082: alloc_fn: Storage is returned from allocation function "copy_command".
+bash-5.2/execute_cmd.c:5082: var_assign: Assigning: "tc" = storage returned from "copy_command((COMMAND *)var->value)".
+bash-5.2/execute_cmd.c:5089: noescape: Resource "tc" is not freed or pointed-to in "optimize_shell_function".
+bash-5.2/execute_cmd.c:5227: var_assign: Assigning: "fc" = "tc".
+bash-5.2/execute_cmd.c:5299: leaked_storage: Variable "fc" going out of scope leaks the storage it points to.
+bash-5.2/execute_cmd.c:5299: leaked_storage: Variable "tc" going out of scope leaks the storage it points to.
+# 5297|       }
+# 5298|   
+# 5299|->   return (result);
+# 5300|   }
+# 5301|
+# It is later free'd through 'dispose_command()' function. See line 5112.
+
+
+Error: OVERRUN (CWE-119):
+bash-5.2/subst.c:8901: assignment: Assigning: "sindex" = "0".
+bash-5.2/subst.c:8902: assignment: Assigning: "slen" = "(s && s[0]) ? s[1] ? s[2] ? strlen(s) : 2UL : 1UL : 0UL". The value of "slen" is now 0.
+bash-5.2/subst.c:8907: incr: Incrementing "sindex". The value of "sindex" is now 1.
+bash-5.2/subst.c:8921: overrun-buffer-arg: Calling "mbrlen" with "s + sindex" and "slen - sindex" is suspicious because of the very large index, 18446744073709551615. The index may be due to a negative parameter being interpreted as unsigned. [Note: The source code implementation of the function has been overridden by a builtin model.]
+# 8919|         else if (c == '&')
+# 8920|           return 1;
+# 8921|->       ADVANCE_CHAR (s, slen, sindex);
+# 8922|       }
+# 8923|     return 0;
+# 18446744073709551615' seems like an unrealistic number is realistic scenarios
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/subst.c:1884: alloc_fn: Storage is returned from allocation function "string_extract".
+bash-5.2/subst.c:1884: var_assign: Assigning: "t" = storage returned from "string_extract(string, &si, "`", flags | 1)".
+bash-5.2/subst.c:1993: leaked_storage: Variable "t" going out of scope leaks the storage it points to.
+# 1991|     *sindex = i;
+# 1992|   
+# 1993|->   return (result);
+# 1994|   }
+# 1995|
+# SX_NOALLOC' is set in call to 'string_extract()'
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/subst.c:2142: alloc_fn: Storage is returned from allocation function "extract_dollar_brace_string".
+bash-5.2/subst.c:2142: var_assign: Assigning: "temp" = storage returned from "extract_dollar_brace_string(ss, &si, 0, 1)".
+bash-5.2/subst.c:2140: overwrite_var: Overwriting "temp" in "temp = extract_delimited_string(ss, &si, "$(", "(", ")", 9)" leaks the storage that "temp" points to.
+# 2138|   	  /* XXX - extract_command_subst here? */
+# 2139|   	  if (string[i+1] == LPAREN)
+# 2140|-> 	    temp = extract_delimited_string (ss, &si, "$(", "(", ")", SX_NOALLOC|SX_COMMAND); /* ) */
+# 2141|   	  else
+# 2142|   	    temp = extract_dollar_brace_string (ss, &si, 0, SX_NOALLOC);
+# temp' is not initialized before this line
+
+
+Error: COPY_PASTE_ERROR (CWE-398):
+bash-5.2/subst.c:1454: original: "extract_delimited_string(string, &si, alt_opener, alt_opener, closer, flags | 1)" looks like the original copy.
+bash-5.2/subst.c:1444: copy_paste_error: "alt_opener" in "extract_delimited_string(string, &si, opener, alt_opener, closer, flags | 1)" looks like a copy-paste error.
+bash-5.2/subst.c:1444: remediation: Should it say "opener" instead?
+# 1442|   	{
+# 1443|   	  si = i + len_opener;
+# 1444|-> 	  t = extract_delimited_string (string, &si, opener, alt_opener, closer, flags|SX_NOALLOC);
+# 1445|   	  CHECK_STRING_OVERRUN (i, si, slen, c);
+# 1446|   	  i = si + 1;
+# Line 1450 says " /* Process a nested ALT_OPENER */", so it does not look like an error
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/subst.c:2142: alloc_fn: Storage is returned from allocation function "extract_dollar_brace_string".
+bash-5.2/subst.c:2142: var_assign: Assigning: "temp" = storage returned from "extract_dollar_brace_string(ss, &si, 0, 1)".
+bash-5.2/subst.c:2156: leaked_storage: Variable "temp" going out of scope leaks the storage it points to.
+# 2154|       }
+# 2155|   
+# 2156|->   CQ_RETURN(i);
+# 2157|   }
+# 2158|
+# SX_NOALLOC' is set in call to 'extract_dollar_brace_string()'
+
+
+Error: INTEGER_OVERFLOW (CWE-190):
+bash-5.2/lib/readline/isearch.c:649: tainted_data_return: Called function "_rl_find_next_mbchar(rl_line_buffer, n, 1, 1)", and a possible return value may be less than zero.
+bash-5.2/lib/readline/isearch.c:649: assign: Assigning: "n" = "(__ctype_get_mb_cur_max() > 1UL && rl_byte_oriented == 0) ? _rl_find_next_mbchar(rl_line_buffer, n, 1, 1) : (n + 1)".
+bash-5.2/lib/readline/isearch.c:651: overflow: The expression "n - wstart" is considered to have possibly overflowed.
+bash-5.2/lib/readline/isearch.c:651: overflow: The expression "n - wstart + 1" is deemed overflowed because at least one of its arguments has overflowed.
+bash-5.2/lib/readline/isearch.c:651: assign: Assigning: "wlen" = "n - wstart + 1".
+bash-5.2/lib/readline/isearch.c:654: overflow: The expression "wlen + 1" is deemed underflowed because at least one of its arguments has underflowed.
+bash-5.2/lib/readline/isearch.c:654: overflow: The expression "cxt->search_string_size += wlen + 1" is deemed underflowed because at least one of its arguments has underflowed.
+bash-5.2/lib/readline/isearch.c:655: overflow_sink: "cxt->search_string_size", which might have underflowed, is passed to "xrealloc(cxt->search_string, cxt->search_string_size)".
+#  653|   	{
+#  654|   	  cxt->search_string_size += wlen + 1;
+#  655|-> 	  cxt->search_string = (char *)xrealloc (cxt->search_string, cxt->search_string_size);
+#  656|   	}
+#  657|         for (; wstart < n; wstart++)
+# I could not find how it may trigger in a real world scenario
+
+
+Error: UNINIT (CWE-457):
+bash-5.2/trap.c:1057: var_decl: Declaring variable "save_return_catch" without initializer.
+bash-5.2/trap.c:1168: uninit_use_in_call: Using uninitialized element of array "save_return_catch" when calling "xbcopy".
+# 1166|   	  return_catch_flag = save_return_catch_flag;
+# 1167|   	  return_catch_value = trap_exit_value;
+# 1168|-> 	  COPY_PROCENV (save_return_catch, return_catch);
+# 1169|   	  if (function_code)
+# 1170|   	    {
+# save_return_catch' is only used if 'save_return_catch_flag' is set
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/subst.c:1884: alloc_fn: Storage is returned from allocation function "string_extract".
+bash-5.2/subst.c:1884: var_assign: Assigning: "t" = storage returned from "string_extract(string, &si, "`", flags | 1)".
+bash-5.2/subst.c:1884: overwrite_var: Overwriting "t" in "t = string_extract(string, &si, "`", flags | 1)" leaks the storage that "t" points to.
+# 1882|   	{
+# 1883|   	  si = i + 1;
+# 1884|-> 	  t = string_extract (string, &si, "`", flags|SX_NOALLOC);
+# 1885|   
+# 1886|   	  CHECK_STRING_OVERRUN (i, si, slen, c);
+# t' is uninitialized before this line
+
+
+Error: INTEGER_OVERFLOW (CWE-190):
+bash-5.2/lib/readline/histexpand.c:225: tainted_data_return: Called function "_rl_get_char_len((char *)string + i, &ps)", and a possible return value may be less than zero.
+bash-5.2/lib/readline/histexpand.c:225: assign: Assigning: "v" = "_rl_get_char_len((char *)string + i, &ps)".
+bash-5.2/lib/readline/histexpand.c:227: overflow: The expression "i" is considered to have possibly overflowed.
+bash-5.2/lib/readline/histexpand.c:244: overflow: The expression "i - local_index" is deemed overflowed because at least one of its arguments has overflowed.
+bash-5.2/lib/readline/histexpand.c:244: assign: Assigning: "which" = "i - local_index".
+bash-5.2/lib/readline/histexpand.c:247: overflow_sink: "which", which might have underflowed, is passed to "strncpy(temp, string + local_index, which)". [Note: The source code implementation of the function has been overridden by a builtin model.]
+#  245|     temp = (char *)xmalloc (1 + which);
+#  246|     if (which)
+#  247|->     strncpy (temp, string + local_index, which);
+#  248|     temp[which] = '\0';
+#  249|
+# There is already a check for return value greater than 1, so this should not happen
+
+
+Error: OVERRUN (CWE-119):
+bash-5.2/builtins/mkbuiltins.c:614: assignment: Assigning: "j" = "0".
+bash-5.2/builtins/mkbuiltins.c:617: overrun-buffer-arg: Calling "strncpy" with "directive" and "j - 1" is suspicious because of the very large index, 18446744073709551615. The index may be due to a negative parameter being interpreted as unsigned. [Note: The source code implementation of the function has been overridden by a builtin model.]
+#  615|   
+#  616|   	  directive = xmalloc (j);
+#  617|-> 	  strncpy (directive, line + 1, j - 1);
+#  618|   	  directive[j -1] = '\0';
+#  619|
+# j' should not be empty
+
+
+Error: UNINIT (CWE-457):
+bash-5.2/support/man2html.c:3088: var_decl: Declaring variable "list_options" without initializer.
+bash-5.2/support/man2html.c:3099: uninit_use_in_call: Using uninitialized value "*list_options" when calling "strstr".
+# 3097|   					strlimitcpy(list_options, c, nl - c, MED_STR_MAX);
+# 3098|   				}
+# 3099|-> 				if (strstr(list_options, "-bullet")) {	/* HTML Unnumbered List */
+# 3100|   					dl_set[itemdepth] = BL_BULLET_LIST;
+# 3101|   					out_html("<UL>\n");
+# This should be harmless
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/builtins/evalstring.c:743: alloc_fn: Storage is returned from allocation function "redirection_expand".
+bash-5.2/builtins/evalstring.c:743: var_assign: Assigning: "fn" = storage returned from "redirection_expand(r->redirectee.filename)".
+bash-5.2/builtins/evalstring.c:753: noescape: Resource "fn" is not freed or pointed-to in "open". [Note: The source code implementation of the function has been overridden by a user model.]
+bash-5.2/builtins/evalstring.c:765: leaked_storage: Variable "fn" going out of scope leaks the storage it points to.
+#  763|     if (fnp)
+#  764|       *fnp = fn;
+#  765|->   return fd;
+#  766|   }
+#  767|
+# The value of 'fn' is assigned to 'fnp' variable, which may be used later.
+
+
+Error: USE_AFTER_FREE (CWE-416):
+bash-5.2/subst.c:1781: freed_arg: "free" frees "result".
+bash-5.2/subst.c:1796: use_after_free: Using freed pointer "result".
+# 1794|   
+# 1795|     *sindex = i;
+# 1796|->   result[result_index] = '\0';
+# 1797|   
+# 1798|     return (result);
+# There is a jump or return after 'result' is free'd, so this line would not be executed
+
+
+Error: INTEGER_OVERFLOW (CWE-190):
+bash-5.2/builtins/help.def:469: tainted_data_argument: The check "j < width" contains the tainted expression "j" which causes "width" to be considered tainted.
+bash-5.2/builtins/help.def:485: overflow: The expression "width - 2" is deemed overflowed because at least one of its arguments has overflowed.
+bash-5.2/builtins/help.def:485: cast_overflow: An assign that casts to a different type, which might trigger an overflow.
+bash-5.2/builtins/help.def:495: overflow_sink: "slen", which might have underflowed, is passed to "wcsnwidth(wcstr + 1, slen, width - 2)".
+#  493|   
+#  494|     /* dispchars == number of characters that will be displayed */
+#  495|->   dispchars = wcsnwidth (wcstr+1, slen, width - 2);
+#  496|     dispcols = wcswidth (wcstr+1, dispchars) + 1;	/* +1 for ' ' or '*' */
+#  497|
+# This should not happen in a real world scenario
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/subst.c:2142: alloc_fn: Storage is returned from allocation function "extract_dollar_brace_string".
+bash-5.2/subst.c:2142: var_assign: Assigning: "temp" = storage returned from "extract_dollar_brace_string(ss, &si, 0, 1)".
+bash-5.2/subst.c:2142: overwrite_var: Overwriting "temp" in "temp = extract_dollar_brace_string(ss, &si, 0, 1)" leaks the storage that "temp" points to.
+# 2140|   	    temp = extract_delimited_string (ss, &si, "$(", "(", ")", SX_NOALLOC|SX_COMMAND); /* ) */
+# 2141|   	  else
+# 2142|-> 	    temp = extract_dollar_brace_string (ss, &si, 0, SX_NOALLOC);
+# 2143|   
+# 2144|   	  CHECK_STRING_OVERRUN (i, si, slen, c);
+# temp' is not initialized before this line
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/redir.c:1516: alloc_fn: Storage is returned from allocation function "get_array_value".
+bash-5.2/redir.c:1516: var_assign: Assigning: "val" = storage returned from "get_array_value(w, 0, NULL)".
+bash-5.2/redir.c:1521: leaked_storage: Variable "val" going out of scope leaks the storage it points to.
+# 1519|     val = get_variable_value (v);
+# 1520|     if (val == 0 || *val == 0)
+# 1521|->     return -1;
+# 1522|   
+# 1523|     if (legal_number (val, &vmax) < 0)
+# There is a check for NULL so there is no allocation of memory.
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/subst.c:1884: alloc_fn: Storage is returned from allocation function "string_extract".
+bash-5.2/subst.c:1884: var_assign: Assigning: "t" = storage returned from "string_extract(string, &si, "`", flags | 1)".
+bash-5.2/subst.c:1897: overwrite_var: Overwriting "t" in "t = extract_command_subst(string, &si, flags | 1)" leaks the storage that "t" points to.
+# 1895|   	{
+# 1896|   	  si = i + 2;
+# 1897|-> 	  t = extract_command_subst (string, &si, flags|SX_NOALLOC);
+# 1898|   
+# 1899|   	  CHECK_STRING_OVERRUN (i, si, slen, c);
+# SX_NOALLOC' is set in the call to 'string_extract()', so there would not be any memory allocated.
+
+
+Error: UNINIT (CWE-457):
+bash-5.2/support/man2html.c:3222: var_decl: Declaring variable "bd_options" without initializer.
+bash-5.2/support/man2html.c:3232: uninit_use_in_call: Using uninitialized value "*bd_options" when calling "strstr".
+# 3230|   				mandoc_bd_options = 0;	/* Remember options for
+# 3231|   							 * terminating Bl */
+# 3232|-> 				if (strstr(bd_options, "-offset indent")) {
+# 3233|   					mandoc_bd_options |= BD_INDENT;
+# 3234|   					out_html("<BLOCKQUOTE>\n");
+# This should be harmless.
+
+
+Error: OVERRUN (CWE-119):
+bash-5.2/lib/sh/tmpfile.c:77: alias: Assigning: "sys_tmpdir" = ""/tmp"". "sys_tmpdir" now points to byte 0 of ""/tmp"" (which consists of 5 bytes).
+bash-5.2/lib/sh/tmpfile.c:78: overrun-buffer-val: Overrunning buffer pointed to by "sys_tmpdir" of 5 bytes by passing it to a function which accesses it at byte offset 8.
+#   76|   
+#   77|     sys_tmpdir = "/tmp";
+#   78|->   if (file_iswdir (sys_tmpdir))
+#   79|       return sys_tmpdir;
+#   80|
+# I fail to see how this function accesses it at offset 8.
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/redir.c:1056: open_fn: Returning handle opened by "here_document_to_fd".
+bash-5.2/redir.c:1056: var_assign: Assigning: "fd" = handle returned from "here_document_to_fd(redirectee, ri)".
+bash-5.2/redir.c:1066: noescape: Resource "fd" is not freed or pointed-to in "fcntl".
+bash-5.2/redir.c:1270: leaked_handle: Handle variable "fd" going out of scope leaks the handle.
+# 1268|         break;
+# 1269|       }
+# 1270|->   return (0);
+# 1271|   }
+# 1272|
+# It is used by the subprocess to read the user input.
+
+
+Error: OVERRUN (CWE-119):
+bash-5.2/lib/readline/tilde.c:271: alloc_strlen: Allocating insufficient memory for the terminating null of the string. [Note: The source code implementation of the function has been overridden by a builtin model.]
+#  269|     int i;
+#  270|   
+#  271|->   ret = (char *)xmalloc (strlen (fname));
+#  272|   #if defined (__MSDOS__)
+#  273|     for (i = 1; fname[i] && fname[i] != '/' && fname[i] != '\\'; i++)
+# It skips the prefix and starts copying the string from index 1, so there is a place for NULL string at the end.
+
+
+Error: INTEGER_OVERFLOW (CWE-190):
+bash-5.2/lib/readline/histexpand.c:458: tainted_data_return: Called function "_rl_get_char_len(str + si, &ps)", and a possible return value may be less than zero.
+bash-5.2/lib/readline/histexpand.c:458: assign: Assigning: "v" = "_rl_get_char_len(str + si, &ps)".
+bash-5.2/lib/readline/histexpand.c:459: overflow: The expression "si" is considered to have possibly overflowed.
+bash-5.2/lib/readline/histexpand.c:470: overflow: The expression "si - i" is deemed overflowed because at least one of its arguments has overflowed.
+bash-5.2/lib/readline/histexpand.c:470: overflow: The expression "si - i + 1" is deemed underflowed because at least one of its arguments has underflowed.
+bash-5.2/lib/readline/histexpand.c:470: overflow_sink: "si - i + 1", which might have underflowed, is passed to "xmalloc(si - i + 1)". [Note: The source code implementation of the function has been overridden by a builtin model.]
+#  468|     if (si > i || is_rhs)
+#  469|       {
+#  470|->       s = (char *)xmalloc (si - i + 1);
+#  471|         for (j = 0, k = i; k < si; j++, k++)
+#  472|   	{
+# This function is called on user input and would require more than 2 Gigabytes of user input before variable 'i' could be overflown. This size of user input is not allowed by default.
+
+
+Error: USE_AFTER_FREE (CWE-416):
+bash-5.2/subst.c:7889: freed_arg: "free" frees "vname".
+bash-5.2/subst.c:7895: pass_freed_arg: Passing freed pointer "vname" as an argument to "stupidly_hack_special_variables".
+# 7893|       }
+# 7894|   
+# 7895|->   stupidly_hack_special_variables (vname);
+# 7896|   
+# 7897|     /* "In all cases, the final value of parameter shall be substituted." */
+# There is a jump at line 7891 that breaks the linear workflow.
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/trap.c:424: alloc_fn: Storage is returned from allocation function "xmalloc". [Note: The source code implementation of the function has been overridden by a builtin model.]
+bash-5.2/trap.c:424: identity_transfer: Passing "xmalloc(1UL + strlen(old_trap))" as argument 1 to function "strcpy", which returns that argument. [Note: The source code implementation of the function has been overridden by a builtin model.]
+bash-5.2/trap.c:424: var_assign: Assigning: "trap_command" = storage returned from "strcpy(xmalloc(1UL + strlen(old_trap)), old_trap)".
+bash-5.2/trap.c:424: overwrite_var: Overwriting "trap_command" in "trap_command = (char *)strcpy(xmalloc(1UL + strlen(old_trap)), old_trap)" leaks the storage that "trap_command" points to.
+#  422|   	    {
+#  423|   	      old_trap = trap_list[sig];
+#  424|-> 	      trap_command = savestring (old_trap);
+#  425|   
+#  426|   	      save_parser_state (&pstate);
+# trap_command' is uninitialized before this line.
+
+
+Error: OVERRUN (CWE-119):
+bash-5.2/lib/tilde/tilde.c:271: alloc_strlen: Allocating insufficient memory for the terminating null of the string. [Note: The source code implementation of the function has been overridden by a builtin model.]
+#  269|     int i;
+#  270|   
+#  271|->   ret = (char *)xmalloc (strlen (fname));
+#  272|   #if defined (__MSDOS__)
+#  273|     for (i = 1; fname[i] && fname[i] != '/' && fname[i] != '\\'; i++)
+# It skips the prefix and starts copying the string from index 1, so there is a place for NULL string at the end.
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/execute_cmd.c:5091: alloc_fn: Storage is returned from allocation function "sh_getopt_save_istate".
+bash-5.2/execute_cmd.c:5091: var_assign: Assigning: "gs" = storage returned from "sh_getopt_save_istate()".
+bash-5.2/execute_cmd.c:5299: leaked_storage: Variable "gs" going out of scope leaks the storage it points to.
+# 5297|       }
+# 5298|   
+# 5299|->   return (result);
+# 5300|   }
+# 5301|
+# I could not verify if it would cause issues in a real scenario.
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/execute_cmd.c:552: open_fn: Returning handle opened by "open". [Note: The source code implementation of the function has been overridden by a user model.]
+bash-5.2/execute_cmd.c:552: var_assign: Assigning: "fd" = handle returned from "open("/dev/null", 0)".
+bash-5.2/execute_cmd.c:553: off_by_one: Testing whether handle "fd" is strictly greater than zero is suspicious.  "fd" leaks when it is zero.
+bash-5.2/execute_cmd.c:553: remediation: Did you intend to include equality with zero?
+bash-5.2/execute_cmd.c:560: leaked_handle: Handle variable "fd" going out of scope leaks the handle.
+#  558|     else if (fd < 0)
+#  559|       internal_error (_("cannot redirect standard input from /dev/null: %s"), strerror (errno));
+#  560|-> }
+#  561|   
+#  562|   #define DESCRIBE_PID(pid) do { if (interactive) describe_pid (pid); } while (0)
+# It is a fd for 'stdin' which is 0, so that is exepected.
+
+
+Error: UNINIT (CWE-457):
+bash-5.2/builtins/shopt.def:677: var_decl: Declaring variable "oldval" without initializer.
+bash-5.2/builtins/shopt.def:712: uninit_use: Using uninitialized value "oldval".
+#  710|     else if (shopt_compat44)
+#  711|       shell_compatibility_level = 44;
+#  712|->   else if (oldval > 44 && shell_compatibility_level < DEFAULT_COMPAT_LEVEL)
+#  713|       ;
+#  714|     else
+# I could not verify in what conditions having uninitialized oldval may cause an issue.
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/trap.c:424: alloc_fn: Storage is returned from allocation function "xmalloc". [Note: The source code implementation of the function has been overridden by a builtin model.]
+bash-5.2/trap.c:424: identity_transfer: Passing "xmalloc(1UL + strlen(old_trap))" as argument 1 to function "strcpy", which returns that argument. [Note: The source code implementation of the function has been overridden by a builtin model.]
+bash-5.2/trap.c:424: var_assign: Assigning: "trap_command" = storage returned from "strcpy(xmalloc(1UL + strlen(old_trap)), old_trap)".
+bash-5.2/trap.c:488: leaked_storage: Variable "trap_command" going out of scope leaks the storage it points to.
+#  486|   #endif
+#  487|     last_command_exit_value = old_exit_value;
+#  488|-> }
+#  489|   
+#  490|   /* Set the private state variables noting that we received a signal SIG
+# Free'ing 'trap_command' at line 488 causes coredump in one of the tests. So this looks like a false positive.
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/execute_cmd.c:5419: alloc_fn: Storage is returned from allocation function "xmalloc". [Note: The source code implementation of the function has been overridden by a builtin model.]
+bash-5.2/execute_cmd.c:5419: identity_transfer: Passing "xmalloc(1UL + strlen((the_printed_command_except_trap ? the_printed_command_except_trap : "")))" as argument 1 to function "strcpy", which returns that argument. [Note: The source code implementation of the function has been overridden by a builtin model.]
+bash-5.2/execute_cmd.c:5419: var_assign: Assigning: "command_line" = storage returned from "strcpy(xmalloc(1UL + strlen((the_printed_command_except_trap ? the_printed_command_except_trap : ""))), (the_printed_command_except_trap ? the_printed_command_except_trap : ""))".
+bash-5.2/execute_cmd.c:5420: noescape: Resource "command_line" is not freed or pointed-to in "execute_disk_command".
+bash-5.2/execute_cmd.c:5422: leaked_storage: Variable "command_line" going out of scope leaks the storage it points to.
+# 5420|   	      r = execute_disk_command (words, (REDIRECT *)0, command_line,
+# 5421|   		  -1, -1, async, (struct fd_bitmap *)0, flags|CMD_NO_FORK);
+# 5422|-> 	    }
+# 5423|   	  subshell_exit (r);
+# 5424|   	}
+# Line 5415 says this code is experimental, I would skip fixing it.
+
+
+Error: USE_AFTER_FREE (CWE-416):
+bash-5.2/subst.c:7889: freed_arg: "free" frees "vname".
+bash-5.2/subst.c:7895: deref_arg: Calling "stupidly_hack_special_variables" dereferences freed pointer "vname".
+# 7893|       }
+# 7894|   
+# 7895|->   stupidly_hack_special_variables (vname);
+# 7896|   
+# 7897|     /* "In all cases, the final value of parameter shall be substituted." */
+# Line 7891 uses 'exp_jump_to_top_level' that jumps out of the linear workflow.
+
+
+Error: INTEGER_OVERFLOW (CWE-190):
+bash-5.2/builtins/help.def:469: tainted_data_argument: The check "j < width" contains the tainted expression "j" which causes "width" to be considered tainted.
+bash-5.2/builtins/help.def:485: overflow: The expression "width - 2" is deemed overflowed because at least one of its arguments has overflowed.
+bash-5.2/builtins/help.def:485: cast_overflow: An assign that casts to a different type, which might trigger an overflow.
+bash-5.2/builtins/help.def:486: overflow: The expression "slen + 1UL" is deemed underflowed because at least one of its arguments has underflowed.
+bash-5.2/builtins/help.def:486: overflow_sink: "slen + 1UL", which might have underflowed, is passed to "mbstowcs(wcstr + 1, helpdoc, slen + 1UL)". [Note: The source code implementation of the function has been overridden by a builtin model.]
+#  484|     if (slen >= width)
+#  485|       slen = width - 2;
+#  486|->   n = mbstowcs (wcstr+1, helpdoc, slen + 1);
+#  487|     wcstr[n+1] = L'\0';		/* make sure null-terminated */
+#  488|
+# slen' is type 'size_t', which is 8 bytes and 'j' is type 'int', which is 4 bytes. So it can not overflow.
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/hashlib.c:344: alloc_fn: Storage is returned from allocation function "hash_create".
+bash-5.2/hashlib.c:344: var_assign: Assigning: "table" = storage returned from "hash_create(0)".
+bash-5.2/hashlib.c:346: noescape: Resource "table" is not freed or pointed-to in "hash_search".
+bash-5.2/hashlib.c:368: leaked_storage: Returning without freeing "table" leaks the storage that it points to.
+#  366|       }
+#  367|   
+#  368|->   return (item);
+#  369|   }
+#  370|
+# hash table is created if it does not exist. It seems to work as expected.
+
+
+Error: BAD_FREE (CWE-763):
+bash-5.2/lib/readline/keymaps.c:158: fnptr_free: "xfree" frees function pointer "map[i].function".
+bash-5.2/lib/readline/keymaps.c:162: fnptr_free: "xfree" frees function pointer "map[i].function".
+#  156|   	case ISKMAP:
+#  157|   	  rl_discard_keymap ((Keymap)map[i].function);
+#  158|-> 	  xfree ((char *)map[i].function);
+#  159|   	  break;
+#  160|
+# It seems to work as expected.
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/subst.c:1884: alloc_fn: Storage is returned from allocation function "string_extract".
+bash-5.2/subst.c:1884: var_assign: Assigning: "t" = storage returned from "string_extract(string, &si, "`", flags | 1)".
+bash-5.2/subst.c:1910: overwrite_var: Overwriting "t" in "t = extract_process_subst(string, ((string[i] == '<') ? "<(" : ">)"), &si, flags | 1)" leaks the storage that "t" points to.
+# 1908|   	{
+# 1909|   	  si = i + 2;
+# 1910|-> 	  t = extract_process_subst (string, (string[i] == '<' ? "<(" : ">)"), &si, flags|SX_NOALLOC);
+# 1911|   
+# 1912|   	  CHECK_STRING_OVERRUN (i, si, slen, c);
+# Flag 'SX_NOALLOC' is set, so memory is not allocated.
+
+
+Error: RESOURCE_LEAK (CWE-772):
+bash-5.2/lib/glob/glob.c:975: alloc_fn: Storage is returned from allocation function "malloc".
+bash-5.2/lib/glob/glob.c:975: var_assign: Assigning: "nextlink" = storage returned from "malloc(16UL)".
+bash-5.2/lib/glob/glob.c:986: var_assign: Assigning: "lastlink" = "nextlink".
+bash-5.2/lib/glob/glob.c:1031: var_assign: Assigning: "tmplink" = "lastlink".
+bash-5.2/lib/glob/glob.c:1054: leaked_storage: Variable "nextlink" going out of scope leaks the storage it points to.
+bash-5.2/lib/glob/glob.c:1054: leaked_storage: Variable "lastlink" going out of scope leaks the storage it points to.
+# 1052|       }
+# 1053|   
+# 1054|->   return (name_vector);
+# 1055|   }
+# 1056|
+# The storage is referenced in 'name_vector' variable
+
+
+Error: BAD_ALLOC_STRLEN (CWE-131):
+bash-5.2/subst.c:9748: bad_alloc_strlen: Using "strlen(name + 1)" instead of "strlen(name) + 1" as an argument to "xmalloc" might be an under-allocation.
+bash-5.2/subst.c:9785: bad_alloc_strlen: Using "strlen(name + 1)" instead of "strlen(name) + 1" as an argument to "xmalloc" might be an under-allocation.
+# 9746|         WORD_LIST *xlist;
+# 9747|   
+# 9748|->       temp1 = savestring (name + 1);
+# 9749|         number = strlen (temp1);
+# 9750|         temp1[number - 1] = '\0';
+# savestring()' macros adds 1 to the call to 'xmalloc()' after 'strlen()'
 
