@@ -1,0 +1,94 @@
+Error: CPPCHECK_WARNING (CWE-457):
+usbutils-018/lsusb-t.c:517: error[uninitvar]: Uninitialized variable: pd
+#  515|   	char n[MY_SYSFS_FILENAME_LEN], *p;
+#  516|   
+#  517|-> 	list_for_each(&usbdevlist, pd, list) {
+#  518|   		if (pd == d)
+#  519|   			continue;
+# Variable is initialized through macro expansion.
+
+Error: CPPCHECK_WARNING (CWE-457):
+usbutils-018/lsusb-t.c:575: error[uninitvar]: Uninitialized variable: d
+#  573|   	struct usbinterface *e;
+#  574|   
+#  575|-> 	list_for_each(&usbdevlist, d, list) {
+#  576|   		if (d->parent_portnum)
+#  577|   			assign_dev_to_parent(d);
+# Variable is initialized through macro expansion.
+
+Error: CPPCHECK_WARNING (CWE-457):
+usbutils-018/lsusb-t.c:581: error[legacyUninitvar]: Uninitialized variable: e
+#  579|   			assign_dev_to_bus(d);
+#  580|   
+#  581|-> 		list_for_each(&interfacelist, e, list) {
+#  582|   			if (!e->parent)
+#  583|   				assign_interface_to_parent(d, e);
+# Variable is initialized through macro expansion.
+
+Error: CPPCHECK_WARNING (CWE-457):
+usbutils-018/lsusb-t.c:726: error[uninitvar]: Uninitialized variable: device
+#  724|   	struct usbbusnode *bus, *tempb;
+#  725|   
+#  726|-> 	list_for_each_safe(&usbdevlist, device, tempd, list) {
+#  727|   		free(device);
+#  728|   	}
+# Variable is initialized through macro expansion.
+
+Error: CPPCHECK_WARNING (CWE-457):
+usbutils-018/lsusb-t.c:730: error[uninitvar]: Uninitialized variable: interface
+#  728|   	}
+#  729|   
+#  730|-> 	list_for_each_safe(&interfacelist, interface, templ, list) {
+#  731|   		free(interface);
+#  732|   	}
+# Variable is initialized through macro expansion.
+
+Error: GCC_ANALYZER_WARNING (CWE-127):
+usbutils-018/redhat-linux-build/../usbmisc.c:80:51: warning[-Wanalyzer-out-of-bounds]: stack-based buffer under-read
+usbutils-018/redhat-linux-build/../usbmisc.c:104:16: enter_function: entry to ‘get_usb_device’
+usbutils-018/redhat-linux-build/../usbmisc.c:112:9: call_function: calling ‘readlink_recursive’ from ‘get_usb_device’
+usbutils-018/redhat-linux-build/../usbmisc.c:112:9: return_function: returning to ‘get_usb_device’ from ‘readlink_recursive’
+usbutils-018/redhat-linux-build/../usbmisc.c:113:9: call_function: calling ‘get_absolute_path’ from ‘get_usb_device’
+#   78|   			result_size--;
+#   79|   		} else if (*ppath == '.' && *(ppath + 1) == '.' &&
+#   80|-> 			   *(ppath + 2) == '/' && *(presult - 1) == '/') {
+#   81|   			if ((presult - 1) != result) {
+#   82|   				/* go one directory upper */
+# If `*ppath != '/'` then `presult` variable gets modified to `*presult++ = '/';` at line 65, so line 80 is not an under-read.
+
+Error: GCC_ANALYZER_WARNING (CWE-127):
+usbutils-018/redhat-linux-build/../usbmisc.c:86:42: warning[-Wanalyzer-out-of-bounds]: stack-based buffer under-read
+usbutils-018/redhat-linux-build/../usbmisc.c:104:16: enter_function: entry to ‘get_usb_device’
+usbutils-018/redhat-linux-build/../usbmisc.c:112:9: call_function: calling ‘readlink_recursive’ from ‘get_usb_device’
+usbutils-018/redhat-linux-build/../usbmisc.c:112:9: return_function: returning to ‘get_usb_device’ from ‘readlink_recursive’
+usbutils-018/redhat-linux-build/../usbmisc.c:113:9: call_function: calling ‘get_absolute_path’ from ‘get_usb_device’
+#   84|   					presult--;
+#   85|   					result_size++;
+#   86|-> 				} while (*(presult - 1) != '/');
+#   87|   			}
+#   88|   			ppath += 3;
+# `presult` variable always gets initialized to `result` path and if ``*ppath != '/'` at line 63 it gets modified to `*presult++ = '/';`. This codepath takes `presult` variable to previous `/` (one directory up) in the path and is not an under-read.
+
+Error: GCC_ANALYZER_WARNING (CWE-127):
+usbutils-018/redhat-linux-build/../usbmisc.c:91:28: warning[-Wanalyzer-out-of-bounds]: stack-based buffer under-read
+usbutils-018/redhat-linux-build/../usbmisc.c:104:16: enter_function: entry to ‘get_usb_device’
+usbutils-018/redhat-linux-build/../usbmisc.c:112:9: call_function: calling ‘readlink_recursive’ from ‘get_usb_device’
+usbutils-018/redhat-linux-build/../usbmisc.c:112:9: return_function: returning to ‘get_usb_device’ from ‘readlink_recursive’
+usbutils-018/redhat-linux-build/../usbmisc.c:113:9: call_function: calling ‘get_absolute_path’ from ‘get_usb_device’
+#   89|   		} else if (*ppath == '.'  &&
+#   90|   			   *(ppath + 1) == '/' &&
+#   91|-> 			   *(presult - 1) == '/') {
+#   92|   			ppath += 2;
+#   93|   		} else {
+# If `*ppath != '/'` then `presult` variable gets modified to `*presult++ = '/';` at line 65, so line 91 is not an under-read.
+
+Error: GCC_ANALYZER_WARNING (CWE-401):
+usbutils-018/redhat-linux-build/../usbmisc.c:169:12: warning[-Wanalyzer-malloc-leak]: leak of ‘iconv_open(nl_langinfo(14), "UTF-16LE")’
+usbutils-018/redhat-linux-build/../usbmisc.c:167:16: acquire_memory: allocated here
+usbutils-018/redhat-linux-build/../usbmisc.c:169:12: danger: ‘iconv_open(nl_langinfo(14), "UTF-16LE")’ leaks here; was allocated at [(1)](sarif:/runs/0/results/3/codeFlows/0/threadFlows/0/locations/0)
+#  167|   	conv = iconv_open(nl_langinfo(CODESET), "UTF-16LE");
+#  168|   
+#  169|-> 	if (conv == (iconv_t) -1)
+#  170|   		return NULL;
+#  171| 
+#  No memory should be allocated on failure, so there is no leak here.
