@@ -1,0 +1,176 @@
+Error: SHELLCHECK_WARNING (CWE-569):
+/usr/bin/xzdiff:66:25: warning[SC2188]: This redirection doesn't have a command. Move to its command (or use 'true' as no-op).
+#   64|   
+#   65|   for file; do
+#   66|->   test "X$file" = X- || <"$file" || exit 2
+#   67|   done
+#   68|   
+# Upstream coding style.
+
+Error: SHELLCHECK_WARNING (CWE-563):
+/usr/bin/xzdiff:103:7: warning[SC2034]: FILE appears unused. Verify use (or export if used externally).
+#  101|         FILE=`expr "X$1" : 'X\(.*[-.]t\)zo$'`ar;;
+#  102|       *.tzst)
+#  103|->       FILE=`expr "X$1" : 'X\(.*[-.]t\)zst$'`ar;;
+#  104|     esac
+#  105|     xz_status=$(
+# Shellcheck cannot see that $FILE is used in an eval command. Nothing to fix here.
+
+Error: SHELLCHECK_WARNING (CWE-569):
+/usr/bin/xzless:48:30: warning[SC2089]: Quotes/backslashes will be treated literally. Rewrite using set/"$@" or functions.
+#   46|   	nl='
+#   47|   '
+#   48|-> 	LESSMETACHARS="$space$tab$nl'"';*?"()<>[|&^`#\$%=~'
+#   49|   fi
+#   50|   
+# Code does what it's supposed to do.
+
+Error: SHELLCHECK_WARNING (CWE-569):
+/usr/bin/xzless:72:8: warning[SC2090]: Quotes/backslashes in this variable will not be respected.
+#   70|   fi
+#   71|   
+#   72|-> export LESSMETACHARS LESSOPEN
+#   73|   
+#   74|   exec less $SHOW_PREPROC_ERRORS "$@"
+# Code does what it's supposed to do.
+
+Error: SHELLCHECK_WARNING (CWE-398):
+/usr/bin/xzmore:47:46: warning[SC2172]: Trapping signals by number is not well defined. Prefer signal names.
+#   45|   fi
+#   46|   if test $? -eq 0 && test -n "$oldtty"; then
+#   47|-> 	trap 'stty $oldtty 2>/dev/null; exit' 0 2 3 5 10 13 15
+#   48|   else
+#   49|   	trap 'stty $ncb echo 2>/dev/null; exit' 0 2 3 5 10 13 15
+# Avoid fixing them to be cautious that a fix won't introduce a new compatibility issue on other operating systems.
+
+Error: SHELLCHECK_WARNING (CWE-398):
+/usr/bin/xzmore:47:48: warning[SC2172]: Trapping signals by number is not well defined. Prefer signal names.
+#   45|   fi
+#   46|   if test $? -eq 0 && test -n "$oldtty"; then
+#   47|-> 	trap 'stty $oldtty 2>/dev/null; exit' 0 2 3 5 10 13 15
+#   48|   else
+#   49|   	trap 'stty $ncb echo 2>/dev/null; exit' 0 2 3 5 10 13 15
+# Avoid fixing them to be cautious that a fix won't introduce a new compatibility issue on other operating systems.
+
+Error: SHELLCHECK_WARNING (CWE-398):
+/usr/bin/xzmore:47:51: warning[SC2172]: Trapping signals by number is not well defined. Prefer signal names.
+#   45|   fi
+#   46|   if test $? -eq 0 && test -n "$oldtty"; then
+#   47|-> 	trap 'stty $oldtty 2>/dev/null; exit' 0 2 3 5 10 13 15
+#   48|   else
+#   49|   	trap 'stty $ncb echo 2>/dev/null; exit' 0 2 3 5 10 13 15
+# Avoid fixing them to be cautious that a fix won't introduce a new compatibility issue on other operating systems.
+
+Error: SHELLCHECK_WARNING (CWE-398):
+/usr/bin/xzmore:49:48: warning[SC2172]: Trapping signals by number is not well defined. Prefer signal names.
+#   47|   	trap 'stty $oldtty 2>/dev/null; exit' 0 2 3 5 10 13 15
+#   48|   else
+#   49|-> 	trap 'stty $ncb echo 2>/dev/null; exit' 0 2 3 5 10 13 15
+#   50|   fi
+#   51|   
+# Avoid fixing them to be cautious that a fix won't introduce a new compatibility issue on other operating systems.
+
+Error: SHELLCHECK_WARNING (CWE-398):
+/usr/bin/xzmore:49:50: warning[SC2172]: Trapping signals by number is not well defined. Prefer signal names.
+#   47|   	trap 'stty $oldtty 2>/dev/null; exit' 0 2 3 5 10 13 15
+#   48|   else
+#   49|-> 	trap 'stty $ncb echo 2>/dev/null; exit' 0 2 3 5 10 13 15
+#   50|   fi
+#   51|   
+# Avoid fixing them to be cautious that a fix won't introduce a new compatibility issue on other operating systems.
+
+Error: SHELLCHECK_WARNING (CWE-398):
+/usr/bin/xzmore:49:53: warning[SC2172]: Trapping signals by number is not well defined. Prefer signal names.
+#   47|   	trap 'stty $oldtty 2>/dev/null; exit' 0 2 3 5 10 13 15
+#   48|   else
+#   49|-> 	trap 'stty $ncb echo 2>/dev/null; exit' 0 2 3 5 10 13 15
+#   50|   fi
+#   51|   
+# Avoid fixing them to be cautious that a fix won't introduce a new compatibility issue on other operating systems.
+
+Error: SHELLCHECK_WARNING (CWE-569):
+/usr/bin/xzmore:61:3: warning[SC2188]: This redirection doesn't have a command. Move to its command (or use 'true' as no-op).
+#   59|   	FIRST=1
+#   60|   	for FILE; do
+#   61|-> 		< "$FILE" || continue
+#   62|   		if test $FIRST -eq 0; then
+#   63|   			printf "%s--More--(Next file: %s)" "" "$FILE"
+# Upstream coding style.
+
+Error: GCC_ANALYZER_WARNING (CWE-476):
+xz-5.8.1/src/liblzma/common/index.c:318:32: warning[-Wanalyzer-null-dereference]: dereference of NULL 'result'
+xz-5.8.1/src/liblzma/common/index.c:1228:1: enter_function: entry to 'lzma_index_iter_locate'
+xz-5.8.1/src/liblzma/common/index.c:1233:12: branch_false: following 'false' branch...
+xz-5.8.1/src/liblzma/common/index.c:1237:38: call_function: inlined call to 'index_tree_locate' from 'lzma_index_iter_locate'
+xz-5.8.1/src/liblzma/common/index.c:1242:36: call_function: inlined call to 'index_tree_locate' from 'lzma_index_iter_locate'
+#  316|   {
+#  317|   	const index_tree_node *result = NULL;
+#  318|-> 	const index_tree_node *node = tree->root;
+#  319|   
+#  320|   	assert(tree->leftmost == NULL
+# False positives because the code won't go past index.c:1233 if those pointers are NULL.
+
+Error: GCC_ANALYZER_WARNING (CWE-476):
+xz-5.8.1/src/liblzma/common/index.c:1251:16: warning[-Wanalyzer-null-dereference]: dereference of NULL 'result'
+xz-5.8.1/src/liblzma/common/index.c:1228:1: enter_function: entry to 'lzma_index_iter_locate'
+xz-5.8.1/src/liblzma/common/index.c:1233:12: branch_false: following 'false' branch...
+xz-5.8.1/src/liblzma/common/index.c:1237:38: call_function: inlined call to 'index_tree_locate' from 'lzma_index_iter_locate'
+xz-5.8.1/src/liblzma/common/index.c:1251:16: danger: dereference of NULL 'result'
+# 1249|   	// we don't want to return them.
+# 1250|   	size_t left = 0;
+# 1251|-> 	size_t right = group->last;
+# 1252|   
+# 1253|   	while (left < right) {
+# False positives because the code won't go past index.c:1233 if those pointers are NULL.
+
+Error: CPPCHECK_WARNING (CWE-457):
+xz-5.8.1/src/liblzma/common/stream_decoder.c:217: error[uninitvar]: Uninitialized variable: filters
+#  215|   
+#  216|   		// Check the memory usage limit.
+#  217|-> 		const uint64_t memusage = lzma_raw_decoder_memusage(filters);
+#  218|   		lzma_ret ret;
+#  219|   
+# `filters` has been initialized by `lzma_block_header_decode`.
+
+Error: GCC_ANALYZER_WARNING (CWE-775):
+xz-5.8.1/src/xz/../common/tuklib_open_stdxxx.c:40:28: warning[-Wanalyzer-fd-leak]: leak of file descriptor ‘open("/dev/null", <unknown>)’
+xz-5.8.1/src/xz/../common/tuklib_open_stdxxx.c:30:25: branch_true: following ‘true’ branch (when ‘i != 3’)...
+xz-5.8.1/src/xz/../common/tuklib_open_stdxxx.c:32:21: branch_true: ...to here
+xz-5.8.1/src/xz/../common/tuklib_open_stdxxx.c:32:20: branch_true: following ‘true’ branch...
+xz-5.8.1/src/xz/../common/tuklib_open_stdxxx.c:37:40: branch_true: following ‘true’ branch (when ‘i == 0’)...
+xz-5.8.1/src/xz/../common/tuklib_open_stdxxx.c:37:40: branch_true: ...to here
+xz-5.8.1/src/xz/../common/tuklib_open_stdxxx.c:37:40: acquire_resource: opened here
+xz-5.8.1/src/xz/../common/tuklib_open_stdxxx.c:40:28: danger: ‘open("/dev/null", <unknown>)’ leaks here; was opened at [(7)](sarif:/runs/0/results/0/codeFlows/0/threadFlows/0/locations/6)
+#   38|   					| (i == 0 ? O_WRONLY : O_RDONLY));
+#   39|   
+#   40|-> 			if (fd != i) {
+#   41|   				if (fd != -1)
+#   42|   					(void)close(fd);
+# Code is to ensure that file descriptors 0, 1, and 2 are open before creating more file descriptors.
+
+Error: CPPCHECK_WARNING (CWE-562):
+xz-5.8.1/src/xzdec/xzdec.c:192: error[autoVariables]: Address of local auto-variable assigned to a function parameter.
+#  190|   
+#  191|   	strm->avail_in = 0;
+#  192|-> 	strm->next_out = out_buf;
+#  193|   	strm->avail_out = BUFSIZ;
+#  194|   
+# Analyzer fears that the pointer will be used even after the local variable is out of scope. This is not the case, so these are false alarms.
+
+Error: CPPCHECK_WARNING (CWE-562):
+xz-5.8.1/src/xzdec/xzdec.c:199: error[autoVariables]: Address of local auto-variable assigned to a function parameter.
+#  197|   	while (true) {
+#  198|   		if (strm->avail_in == 0) {
+#  199|-> 			strm->next_in = in_buf;
+#  200|   			strm->avail_in = fread(in_buf, 1, BUFSIZ, file);
+#  201|   
+# Analyzer fears that the pointer will be used even after the local variable is out of scope. This is not the case, so these are false alarms.
+
+Error: CPPCHECK_WARNING (CWE-562):
+xz-5.8.1/src/xzdec/xzdec.c:247: error[autoVariables]: Address of local auto-variable assigned to a function parameter.
+#  245|   			}
+#  246|   
+#  247|-> 			strm->next_out = out_buf;
+#  248|   			strm->avail_out = BUFSIZ;
+#  249|   		}
+# Analyzer fears that the pointer will be used even after the local variable is out of scope. This is not the case, so these are false alarms.
