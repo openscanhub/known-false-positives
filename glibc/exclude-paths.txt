@@ -1,0 +1,3 @@
+^glibc-[^/]*/.*/tst-'
+^glibc-[^/]*/.*/test-'
+^glibc-[^/]*/.*/bug-'
