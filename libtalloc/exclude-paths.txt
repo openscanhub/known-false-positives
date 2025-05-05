@@ -1,0 +1,3 @@
+^talloc-[^/]*/bin/default/../../lib/replace/tests/
+^talloc-[^/]*/bin/default/../../testsuite.c
+^talloc-[^/]*/testsuite.c
