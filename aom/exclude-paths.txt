@@ -1,0 +1,2 @@
+^aom-[^/]*/examples/
+^aom-[^/]*/third_party/
