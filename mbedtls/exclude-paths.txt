@@ -1,0 +1,2 @@
+^mbedtls-[^/]*/tests/
+^mbedtls-[^/]*/framework/tests/
