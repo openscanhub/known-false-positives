@@ -1,0 +1,3 @@
+^orc-[^/]*/examples/
+^orc-[^/]*/orc-test/
+^orc-[^/]*/testsuite/
