@@ -1,0 +1,2 @@
+^/usr/share/buildah/test/
+^buildah-[^/]*/vendor/
