@@ -1,1 +1,2 @@
 ^podman-[^/]/vendor/
+^/usr/share/podman/test/
