@@ -1,0 +1,2 @@
+^libvncserver-LibVNCServer-[^/]*/examples
+^libvncserver-LibVNCServer-[^/]*/test
