@@ -1,0 +1,2 @@
+^libvirt-[^/]*/tests
+^libvirt-[^/]*/examples
