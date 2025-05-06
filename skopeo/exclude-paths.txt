@@ -1,1 +1,1 @@
-^skopeo-[^/]/vendor/
+^skopeo-[^/]*/vendor/

@@ -1,1 +1,1 @@
-^libcap-[^/]/go/vendor/
+^libcap-[^/]*/go/vendor/
