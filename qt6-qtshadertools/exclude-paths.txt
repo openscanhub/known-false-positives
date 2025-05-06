@@ -1,0 +1,1 @@
+^qtshadertools-everywhere-src-[^/]*/src/3rdparty/
