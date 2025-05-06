@@ -1,0 +1,1 @@
+^qtwebengine-everywhere-src-[^/]*/.*/(3rdparty|third_party)/
