@@ -133,14 +133,14 @@ xz-5.8.1/src/liblzma/common/stream_decoder.c:217: error[uninitvar]: Uninitialize
 # `filters` has been initialized by `lzma_block_header_decode`.
 
 Error: GCC_ANALYZER_WARNING (CWE-775):
-xz-5.8.1/src/xz/../common/tuklib_open_stdxxx.c:40:28: warning[-Wanalyzer-fd-leak]: leak of file descriptor ‘open("/dev/null", <unknown>)’
-xz-5.8.1/src/xz/../common/tuklib_open_stdxxx.c:30:25: branch_true: following ‘true’ branch (when ‘i != 3’)...
-xz-5.8.1/src/xz/../common/tuklib_open_stdxxx.c:32:21: branch_true: ...to here
-xz-5.8.1/src/xz/../common/tuklib_open_stdxxx.c:32:20: branch_true: following ‘true’ branch...
-xz-5.8.1/src/xz/../common/tuklib_open_stdxxx.c:37:40: branch_true: following ‘true’ branch (when ‘i == 0’)...
-xz-5.8.1/src/xz/../common/tuklib_open_stdxxx.c:37:40: branch_true: ...to here
-xz-5.8.1/src/xz/../common/tuklib_open_stdxxx.c:37:40: acquire_resource: opened here
-xz-5.8.1/src/xz/../common/tuklib_open_stdxxx.c:40:28: danger: ‘open("/dev/null", <unknown>)’ leaks here; was opened at [(7)](sarif:/runs/0/results/0/codeFlows/0/threadFlows/0/locations/6)
+xz-5.8.1/src/common/tuklib_open_stdxxx.c:40:28: warning[-Wanalyzer-fd-leak]: leak of file descriptor ‘open("/dev/null", <unknown>)’
+xz-5.8.1/src/common/tuklib_open_stdxxx.c:30:25: branch_true: following ‘true’ branch (when ‘i != 3’)...
+xz-5.8.1/src/common/tuklib_open_stdxxx.c:32:21: branch_true: ...to here
+xz-5.8.1/src/common/tuklib_open_stdxxx.c:32:20: branch_true: following ‘true’ branch...
+xz-5.8.1/src/common/tuklib_open_stdxxx.c:37:40: branch_true: following ‘true’ branch (when ‘i == 0’)...
+xz-5.8.1/src/common/tuklib_open_stdxxx.c:37:40: branch_true: ...to here
+xz-5.8.1/src/common/tuklib_open_stdxxx.c:37:40: acquire_resource: opened here
+xz-5.8.1/src/common/tuklib_open_stdxxx.c:40:28: danger: ‘open("/dev/null", <unknown>)’ leaks here; was opened at [(7)](sarif:/runs/0/results/0/codeFlows/0/threadFlows/0/locations/6)
 #   38|   					| (i == 0 ? O_WRONLY : O_RDONLY));
 #   39|   
 #   40|-> 			if (fd != i) {
