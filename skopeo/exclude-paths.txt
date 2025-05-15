@@ -1,1 +1,2 @@
 ^skopeo-[^/]*/vendor/
+^/usr/share/skopeo/test/
