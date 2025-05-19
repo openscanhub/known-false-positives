@@ -1,0 +1,27 @@
+Error: GCC_ANALYZER_WARNING (CWE-401):
+minizip-ng-4.0.9/mz_os_posix.c:69:8: warning[-Wanalyzer-malloc-leak]: leak of ‘iconv_open("UTF-8", from_encoding)’
+minizip-ng-4.0.9/mz_os_posix.c:52:8: branch_false: following ‘false’ branch...
+<unknown>: branch_false: ...to here
+minizip-ng-4.0.9/mz_os_posix.c:68:10: acquire_memory: allocated here
+minizip-ng-4.0.9/mz_os_posix.c:69:8: danger: ‘iconv_open("UTF-8", from_encoding)’ leaks here; was allocated at [(3)](sarif:/runs/0/results/0/codeFlows/0/threadFlows/0/locations/2)
+#   67|   
+#   68|       cd = iconv_open("UTF-8", from_encoding);
+#   69|->     if (cd == (iconv_t)-1)
+#   70|           return NULL;
+#   71|   
+# No memory allocated if function fails.
+
+Error: COMPILER_WARNING:
+minizip-ng-4.0.9/mz_zip.c: scope_hint: In function ‘mz_zip_set_comment’
+minizip-ng-4.0.9/mz_zip.c:1568:5: warning[-Wstringop-truncation]: ‘__strncpy_chk’ output truncated before terminating nul copying as many bytes from a string as its length
+# 1568 |     strncpy(zip->comment, comment, comment_size);
+#      |     ^
+minizip-ng-4.0.9/mz_zip.c:1562:29: note: length computed here
+# 1562 |     comment_size = (int32_t)strlen(comment);
+#      |                             ^~~~~~~~~~~~~~~
+# 1566|       if (!zip->comment)
+# 1567|           return MZ_MEM_ERROR;
+# 1568|->     strncpy(zip->comment, comment, comment_size);
+# 1569|       return MZ_OK;
+# 1570|   }
+# `zip->comment` is allocated through `calloc()` which intializes allocated memory to zero bytes.
