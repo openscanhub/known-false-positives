@@ -1,0 +1,32 @@
+Error: CPPCHECK_WARNING (CWE-457): [#def64]
+llvm-project-21.1.8.src/llvm/include/llvm/Support/MathExtras.h:146: warning[uninitvar]: Uninitialized variable: out
+#  144|     for (unsigned i = 0; i < sizeof(Val); ++i)
+#  145|       out[(sizeof(Val) - i) - 1] = BitReverseTable256[in[i]];
+#  146|->   std::memcpy(&Val, out, sizeof(Val));
+#  147|     return Val;
+#  148|   }
+
+Error: CPPCHECK_WARNING (CWE-457): [#def65]
+llvm-project-21.1.8.src/llvm/include/llvm/Support/MathExtras.h:620: error[legacyUninitvar]: Uninitialized variable: Dummy
+#  618|   SaturatingAdd(T X, T Y, bool *ResultOverflowed = nullptr) {
+#  619|     bool Dummy;
+#  620|->   bool &Overflowed = ResultOverflowed ? *ResultOverflowed : Dummy;
+#  621|     // Hacker's Delight, p. 29
+#  622|     T Z = X + Y;
+
+Error: CPPCHECK_WARNING (CWE-457): [#def66]
+llvm-project-21.1.8.src/llvm/include/llvm/Support/MathExtras.h:649: error[legacyUninitvar]: Uninitialized variable: Dummy
+#  647|   SaturatingMultiply(T X, T Y, bool *ResultOverflowed = nullptr) {
+#  648|     bool Dummy;
+#  649|->   bool &Overflowed = ResultOverflowed ? *ResultOverflowed : Dummy;
+#  650|   
+#  651|     // Hacker's Delight, p. 30 has a different algorithm, but we don't use that
+
+Error: CPPCHECK_WARNING (CWE-457): [#def67]
+llvm-project-21.1.8.src/llvm/include/llvm/Support/MathExtras.h:695: error[legacyUninitvar]: Uninitialized variable: Dummy
+#  693|   SaturatingMultiplyAdd(T X, T Y, T A, bool *ResultOverflowed = nullptr) {
+#  694|     bool Dummy;
+#  695|->   bool &Overflowed = ResultOverflowed ? *ResultOverflowed : Dummy;
+#  696|   
+#  697|     T Product = SaturatingMultiply(X, Y, &Overflowed);
+
