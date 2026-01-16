@@ -30,3 +30,196 @@ llvm-project-21.1.8.src/llvm/include/llvm/Support/MathExtras.h:695: error[legacy
 #  696|   
 #  697|     T Product = SaturatingMultiply(X, Y, &Overflowed);
 
+
+Error: CLANG_WARNING: [#def21]
+llvm-project-21.1.8.src/bolt/runtime/hugify.cpp:12: included_from: Included from here.
+llvm-project-21.1.8.src/bolt/runtime/common.h:159: included_from: Included from here.
+llvm-project-21.1.8.src/bolt/runtime/sys_x86_64.h:48:10: warning: unused function 'getTextBaseAddress' [-Wunused-function]
+#   48 | uint64_t getTextBaseAddress() {
+#      |          ^~~~~~~~~~~~~~~~~~
+#   46|   // in turn can be used to search for indirect call description. Needed because
+#   47|   // indirect call descriptions are read-only non-relocatable data.
+#   48|-> uint64_t getTextBaseAddress() {
+#   49|     uint64_t DynAddr;
+#   50|     uint64_t StaticAddr;
+
+Error: CLANG_WARNING: [#def22]
+llvm-project-21.1.8.src/bolt/runtime/instr.cpp:43: included_from: Included from here.
+llvm-project-21.1.8.src/bolt/runtime/common.h:159: included_from: Included from here.
+llvm-project-21.1.8.src/bolt/runtime/sys_x86_64.h:60:10: warning: unused function '__read' [-Wunused-function]
+#   60 | uint64_t __read(uint64_t fd, const void *buf, uint64_t count) {
+#      |          ^~~~~~
+#   58|   #define STRINGIFY(x) _STRINGIFY(x)
+#   59|   
+#   60|-> uint64_t __read(uint64_t fd, const void *buf, uint64_t count) {
+#   61|     uint64_t ret;
+#   62|   #if defined(__APPLE__)
+
+Error: CLANG_WARNING: [#def23]
+llvm-project-21.1.8.src/bolt/runtime/sys_x86_64.h:141:10: warning: unused function '__getpid' [-Wunused-function]
+#  141 | uint64_t __getpid() {
+#      |          ^~~~~~~~
+#  139|   }
+#  140|   
+#  141|-> uint64_t __getpid() {
+#  142|     uint64_t ret;
+#  143|   #if defined(__APPLE__)
+
+Error: CLANG_WARNING: [#def24]
+llvm-project-21.1.8.src/bolt/runtime/sys_x86_64.h:189:6: warning: unused function '__getdents64' [-Wunused-function]
+#  189 | long __getdents64(unsigned int fd, dirent64 *dirp, size_t count) {
+#      |      ^~~~~~~~~~~~
+#  187|   }
+#  188|   
+#  189|-> long __getdents64(unsigned int fd, dirent64 *dirp, size_t count) {
+#  190|     long ret;
+#  191|     __asm__ __volatile__("movq $217, %%rax\n"
+
+Error: CLANG_WARNING: [#def25]
+llvm-project-21.1.8.src/bolt/runtime/sys_x86_64.h:199:10: warning: unused function '__readlink' [-Wunused-function]
+#  199 | uint64_t __readlink(const char *pathname, char *buf, size_t bufsize) {
+#      |          ^~~~~~~~~~
+#  197|   }
+#  198|   
+#  199|-> uint64_t __readlink(const char *pathname, char *buf, size_t bufsize) {
+#  200|     uint64_t ret;
+#  201|     __asm__ __volatile__("movq $89, %%rax\n"
+
+Error: CLANG_WARNING: [#def26]
+llvm-project-21.1.8.src/bolt/runtime/sys_x86_64.h:209:10: warning: unused function '__lseek' [-Wunused-function]
+#  209 | uint64_t __lseek(uint64_t fd, uint64_t pos, uint64_t whence) {
+#      |          ^~~~~~~
+#  207|   }
+#  208|   
+#  209|-> uint64_t __lseek(uint64_t fd, uint64_t pos, uint64_t whence) {
+#  210|     uint64_t ret;
+#  211|     __asm__ __volatile__("movq $8, %%rax\n"
+
+Error: CLANG_WARNING: [#def27]
+llvm-project-21.1.8.src/bolt/runtime/sys_x86_64.h:219:5: warning: unused function '__ftruncate' [-Wunused-function]
+#  219 | int __ftruncate(uint64_t fd, uint64_t length) {
+#      |     ^~~~~~~~~~~
+#  217|   }
+#  218|   
+#  219|-> int __ftruncate(uint64_t fd, uint64_t length) {
+#  220|     int ret;
+#  221|     __asm__ __volatile__("movq $77, %%rax\n"
+
+Error: CLANG_WARNING: [#def28]
+llvm-project-21.1.8.src/bolt/runtime/sys_x86_64.h:229:5: warning: unused function '__close' [-Wunused-function]
+#  229 | int __close(uint64_t fd) {
+#      |     ^~~~~~~
+#  227|   }
+#  228|   
+#  229|-> int __close(uint64_t fd) {
+#  230|     uint64_t ret;
+#  231|     __asm__ __volatile__("movq $3, %%rax\n"
+
+Error: CLANG_WARNING: [#def29]
+llvm-project-21.1.8.src/bolt/runtime/sys_x86_64.h:239:5: warning: unused function '__madvise' [-Wunused-function]
+#  239 | int __madvise(void *addr, size_t length, int advice) {
+#      |     ^~~~~~~~~
+#  237|   }
+#  238|   
+#  239|-> int __madvise(void *addr, size_t length, int advice) {
+#  240|     int ret;
+#  241|     __asm__ __volatile__("movq $28, %%rax\n"
+
+Error: CLANG_WARNING: [#def30]
+llvm-project-21.1.8.src/bolt/runtime/sys_x86_64.h:249:5: warning: unused function '__uname' [-Wunused-function]
+#  249 | int __uname(struct UtsNameTy *Buf) {
+#      |     ^~~~~~~
+#  247|   }
+#  248|   
+#  249|-> int __uname(struct UtsNameTy *Buf) {
+#  250|     int Ret;
+#  251|     __asm__ __volatile__("movq $63, %%rax\n"
+
+Error: CLANG_WARNING: [#def31]
+llvm-project-21.1.8.src/bolt/runtime/sys_x86_64.h:259:10: warning: unused function '__nanosleep' [-Wunused-function]
+#  259 | uint64_t __nanosleep(const timespec *req, timespec *rem) {
+#      |          ^~~~~~~~~~~
+#  257|   }
+#  258|   
+#  259|-> uint64_t __nanosleep(const timespec *req, timespec *rem) {
+#  260|     uint64_t ret;
+#  261|     __asm__ __volatile__("movq $35, %%rax\n"
+
+Error: CLANG_WARNING: [#def32]
+llvm-project-21.1.8.src/bolt/runtime/sys_x86_64.h:269:9: warning: unused function '__fork' [-Wunused-function]
+#  269 | int64_t __fork() {
+#      |         ^~~~~~
+#  267|   }
+#  268|   
+#  269|-> int64_t __fork() {
+#  270|     uint64_t ret;
+#  271|     __asm__ __volatile__("movq $57, %%rax\n"
+
+Error: CLANG_WARNING: [#def33]
+llvm-project-21.1.8.src/bolt/runtime/sys_x86_64.h:279:5: warning: unused function '__mprotect' [-Wunused-function]
+#  279 | int __mprotect(void *addr, size_t len, int prot) {
+#      |     ^~~~~~~~~~
+#  277|   }
+#  278|   
+#  279|-> int __mprotect(void *addr, size_t len, int prot) {
+#  280|     int ret;
+#  281|     __asm__ __volatile__("movq $10, %%rax\n"
+
+Error: CLANG_WARNING: [#def34]
+llvm-project-21.1.8.src/bolt/runtime/sys_x86_64.h:289:10: warning: unused function '__getppid' [-Wunused-function]
+#  289 | uint64_t __getppid() {
+#      |          ^~~~~~~~~
+#  287|   }
+#  288|   
+#  289|-> uint64_t __getppid() {
+#  290|     uint64_t ret;
+#  291|     __asm__ __volatile__("movq $110, %%rax\n"
+
+Error: CLANG_WARNING: [#def35]
+llvm-project-21.1.8.src/bolt/runtime/sys_x86_64.h:299:5: warning: unused function '__setpgid' [-Wunused-function]
+#  299 | int __setpgid(uint64_t pid, uint64_t pgid) {
+#      |     ^~~~~~~~~
+#  297|   }
+#  298|   
+#  299|-> int __setpgid(uint64_t pid, uint64_t pgid) {
+#  300|     int ret;
+#  301|     __asm__ __volatile__("movq $109, %%rax\n"
+
+Error: CLANG_WARNING: [#def36]
+llvm-project-21.1.8.src/bolt/runtime/sys_x86_64.h:309:10: warning: unused function '__getpgid' [-Wunused-function]
+#  309 | uint64_t __getpgid(uint64_t pid) {
+#      |          ^~~~~~~~~
+#  307|   }
+#  308|   
+#  309|-> uint64_t __getpgid(uint64_t pid) {
+#  310|     uint64_t ret;
+#  311|     __asm__ __volatile__("movq $121, %%rax\n"
+
+Error: CLANG_WARNING: [#def37]
+llvm-project-21.1.8.src/bolt/runtime/sys_x86_64.h:319:5: warning: unused function '__kill' [-Wunused-function]
+#  319 | int __kill(uint64_t pid, int sig) {
+#      |     ^~~~~~
+#  317|   }
+#  318|   
+#  319|-> int __kill(uint64_t pid, int sig) {
+#  320|     int ret;
+#  321|     __asm__ __volatile__("movq $62, %%rax\n"
+
+Error: CLANG_WARNING: [#def38]
+llvm-project-21.1.8.src/bolt/runtime/sys_x86_64.h:329:5: warning: unused function '__fsync' [-Wunused-function]
+#  329 | int __fsync(int fd) {
+#      |     ^~~~~~~
+#  327|   }
+#  328|   
+#  329|-> int __fsync(int fd) {
+#  330|     int ret;
+#  331|     __asm__ __volatile__("movq $74, %%rax\n"
+
+Error: CLANG_WARNING: [#def39]
+llvm-project-21.1.8.src/bolt/runtime/sys_x86_64.h:342:5: warning: unused function '__prctl' [-Wunused-function]
+#  342 | int __prctl(int Option, unsigned long Arg2, unsigned long Arg3,
+#      |     ^~~~~~~
+#  340|   // sys_prctl  int option  unsigned    unsigned    unsigned    unsigned
+#  341|   //                        long arg2   long arg3   long arg4   long arg5
+#  342|-> int __prctl(int Option, unsigned long Arg2, unsigned long Arg3,
+#  343|               unsigned long Arg4, unsigned long Arg5) {
