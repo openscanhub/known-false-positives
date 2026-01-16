@@ -30,3 +30,13 @@ llvm-project-21.1.8.src/llvm/include/llvm/Support/MathExtras.h:695: error[legacy
 #  696|   
 #  697|     T Product = SaturatingMultiply(X, Y, &Overflowed);
 
+Error: CLANG_WARNING: [#def72]
+llvm-project-21.1.8.src/llvm/lib/Transforms/Scalar/LoopInterchange.cpp:863:20: warning: unused variable 'OpCode' [-Wunused-variable]
+#  863 |           unsigned OpCode = RecurrenceDescriptor::getOpcode(RK);
+#      |                    ^~~~~~
+#  861|           case RecurKind::Add:
+#  862|           case RecurKind::Mul: {
+#  863|->           unsigned OpCode = RecurrenceDescriptor::getOpcode(RK);
+#  864|             SmallVector<Instruction *, 4> Ops = RD.getReductionOpChain(PHI, L);
+#  865|   
+
