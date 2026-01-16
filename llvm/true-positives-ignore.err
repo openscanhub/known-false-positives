@@ -6,3 +6,19 @@ llvm-project-21.1.8.src/polly/lib/External/isl/isl_arg.c:983: error[memleakOnRea
 #  984|   	if (!list)
 #  985|   		return -1;
 
+Error: UNICONTROL_WARNING (CWE-94): [#def83]
+llvm-project-21.1.8.src/llvm/redhat-linux-build/tools/clang/tools/extra/docs/man/extraclangtools.1:13958: warning: bidirectional control characters: ['\u202e', '\u2066', '\u2069', '\u2066']
+#13956|   int main() {
+#13957|       bool isAdmin = false;
+#13958|->     /*‮ } ⁦if (isAdmin)⁩ ⁦ begin admins only */
+#13959|           std::cout << \(dqYou are an admin.\en\(dq;
+#13960|       /* end admins only ‮ { ⁦*/
+
+Error: UNICONTROL_WARNING (CWE-94): [#def84]
+llvm-project-21.1.8.src/llvm/redhat-linux-build/tools/clang/tools/extra/docs/man/extraclangtools.1:13960: warning: bidirectional control characters: ['\u202e', '\u2066']
+#13958|       /*‮ } ⁦if (isAdmin)⁩ ⁦ begin admins only */
+#13959|           std::cout << \(dqYou are an admin.\en\(dq;
+#13960|->     /* end admins only ‮ { ⁦*/
+#13961|       return 0;
+#13962|   }
+
