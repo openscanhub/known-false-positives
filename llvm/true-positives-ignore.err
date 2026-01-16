@@ -1,0 +1,8 @@
+Error: CPPCHECK_WARNING (CWE-401): [#def89]
+llvm-project-21.1.8.src/polly/lib/External/isl/isl_arg.c:983: error[memleakOnRealloc]: Common realloc mistake: 'list' nulled but not freed upon failure
+#  981|   	char **list = *(char ***)(((char *) opt) + decl->offset);
+#  982|   
+#  983|-> 	list = realloc(list, (*n + 1) * sizeof(char *));
+#  984|   	if (!list)
+#  985|   		return -1;
+
