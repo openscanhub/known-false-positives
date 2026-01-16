@@ -40,3 +40,13 @@ llvm-project-21.1.8.src/llvm/lib/Transforms/Scalar/LoopInterchange.cpp:863:20: w
 #  864|             SmallVector<Instruction *, 4> Ops = RD.getReductionOpChain(PHI, L);
 #  865|   
 
+Error: CLANG_WARNING: [#def73]
+llvm-project-21.1.8.src/llvm/lib/Transforms/Vectorize/VPlanConstruction.cpp:702:13: warning: unused variable 'RedPhiRK' [-Wunused-variable]
+#  702 |   RecurKind RedPhiRK = RedPhiR->getRecurrenceKind();
+#      |             ^~~~~~~~
+#  700|       return false;
+#  701|   
+#  702|->   RecurKind RedPhiRK = RedPhiR->getRecurrenceKind();
+#  703|     assert((RedPhiRK == RecurKind::FMaxNum || RedPhiRK == RecurKind::FMinNum) &&
+#  704|            "unsupported reduction");
+
