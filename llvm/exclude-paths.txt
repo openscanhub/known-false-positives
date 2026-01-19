@@ -1,1 +1,2 @@
 .*/CMakeFiles/CMakeScratch/TryCompile-[^/]*/CheckSymbolExists\.c
+.*/polly/lib/External/isl/.*
