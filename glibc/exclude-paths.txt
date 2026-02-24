@@ -4,3 +4,6 @@
 ^glibc-[^/]*/benchtests
 ^glibc-[^/]*/build-[^/]*/benchtests
 ^/usr/libexec/glibc-benchtests/glibc-bench-compare
+^glibc-[^/]*/localedata/locales
+^/usr/share/i18n/locales
+^/usr/bin
