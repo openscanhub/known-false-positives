@@ -1,3 +1,6 @@
 ^glibc-[^/]*/.*/tst-
 ^glibc-[^/]*/.*/test-
 ^glibc-[^/]*/.*/bug-
+^glibc-[^/]*/benchtests
+^glibc-[^/]*/build-[^/]*/benchtests
+^/usr/libexec/glibc-benchtests/glibc-bench-compare
