@@ -1,0 +1,13 @@
+# CODEOWNERS file defines default GitHub PR reviewers for specified paths
+#
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+# Each line is a file pattern followed by one or more owners.
+
+# Order of the rules is important!  The last matching pattern has the most
+# precedence.
+
+# Default reviewers
+* @siteshwar
+
+# Reviewers for specific paths
+glibc/       @submachine
