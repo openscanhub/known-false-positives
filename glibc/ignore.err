@@ -1,0 +1,36 @@
+Error: CPPCHECK_WARNING (CWE-457):
+glibc-2.43.9000-94-g4b5a74412e/libio/obprintf.c:99: error[uninitvar]: Uninitialized variable: buf.ch
+#   97|     if (buf.base.write_ptr == &buf.ch + 1)
+#   98|       /* buf.ch is in use.  Put it into the obstack.  */
+#   99|->     obstack_1grow (buf.obstack, buf.ch);
+#  100|     else if (buf.base.write_ptr != &buf.ch)
+#  101|       /* Shrink the buffer to the space we really currently need.  */
+# ch is used as a temporary buffer, set up by __printf_buffer_flush_obstack, and protected by write_base and write_ptr.  It will only be read if it's been set up as a queue and the queue written to.
+
+Error: GCC_ANALYZER_WARNING (CWE-457):
+glibc-2.43.9000-94-g4b5a74412e/resolv/res_send.c: scope_hint: In function ‘reopen’
+glibc-2.43.9000-94-g4b5a74412e/resolv/res_send.c:856:21: warning[-Wanalyzer-use-of-uninitialized-value]: use of uninitialized value ‘slen’
+#  854|   		DIAG_PUSH_NEEDS_COMMENT;
+#  855|   		DIAG_IGNORE_NEEDS_COMMENT_GCC (5, "-Wmaybe-uninitialized");
+#  856|-> 		if (__connect (EXT (statp).nssocks[ns], nsap, slen) < 0) {
+#  857|   		DIAG_POP_NEEDS_COMMENT;
+#  858|   			__res_iclose(statp, false);
+# whether slen is uninitialized or not correlates with whether EST(statp).nssocks[ns] is set on lines 808 and 815.  If slen is not initialized, the test on line 820 will be true and the function will exit.  Thus, slen will be initialized by line 856
+
+Error: CPPCHECK_WARNING (CWE-686):
+glibc-2.43.9000-94-g4b5a74412e/timezone/zic.c:2773: error[invalidFunctionArgBool]: Invalid putc() argument nr 1. A non-boolean value is required.
+# 2771|   		  for (i = old0; i < typecnt; i++)
+# 2772|   			if (!omittype[i])
+# 2773|-> 				putc(ttisstds[i], fp);
+# 2774|   		if (utcnt != 0)
+# 2775|   		  for (i = old0; i < typecnt; i++)
+# The checker is broken.  Bool promotes to int just fine.
+
+Error: CPPCHECK_WARNING (CWE-686):
+glibc-2.43.9000-94-g4b5a74412e/timezone/zic.c:2777: error[invalidFunctionArgBool]: Invalid putc() argument nr 1. A non-boolean value is required.
+# 2775|   		  for (i = old0; i < typecnt; i++)
+# 2776|   			if (!omittype[i])
+# 2777|-> 				putc(ttisuts[i], fp);
+# 2778|   	}
+# 2779|   	fprintf(fp, "\n%s\n", string);
+# The checker is broken. Bool promotes to int just fine.
