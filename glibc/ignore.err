@@ -34,3 +34,48 @@ glibc-2.43.9000-94-g4b5a74412e/timezone/zic.c:2777: error[invalidFunctionArgBool
 # 2778|   	}
 # 2779|   	fprintf(fp, "\n%s\n", string);
 # The checker is broken. Bool promotes to int just fine.
+
+Error: GCC_ANALYZER_WARNING (CWE-476):
+glibc-2.43.9000-94-g4b5a74412e/argp/argp-help.c:1766:14: warning[-Wanalyzer-null-dereference]: dereference of NULL ‘hol’
+# 1764|       {
+# 1765|         /* Print info about all the options.  */
+# 1766|->       if (hol->num_entries > 0)
+# 1767|   	{
+# 1768|   	  if (anything)
+# On 1685, we do a flags check and assign hol if ARGP_HELP_LONG is on. Here
+# we dereference hol under the same flag condition.
+
+Error: GCC_ANALYZER_WARNING (CWE-476):
+glibc-2.43.9000-94-g4b5a74412e/catgets/gencat.c: scope_hint: In function ‘read_old’
+glibc-2.43.9000-94-g4b5a74412e/catgets/gencat.c:1281:15: warning[-Wanalyzer-null-dereference]: dereference of NULL ‘set’
+# 1279|   
+# 1280|         last = NULL;
+# 1281|->       message = set->messages;
+# 1282|         while (message != NULL)
+# 1283|   	{
+# Although set is initialized as NULL, by the time we get to line 1281, we
+# have entered the if at 1274 (because we didn't continue at 1272) and
+# called find_set, which always allocates and returns a set.
+
+Error: GCC_ANALYZER_WARNING (CWE-465):
+glibc-2.43.9000-94-g4b5a74412e/posix/wordexp.c: scope_hint: In function ‘eval_expr_multdiv.part.0’
+glibc-2.43.9000-94-g4b5a74412e/posix/wordexp.c:586:30: warning[-Wanalyzer-deref-before-check]: check of ‘*expr’ for NULL after already dereferencing it
+#  584|       {
+#  585|         /* Skip white space */
+#  586|->       for (; *expr && **expr && isspace (**expr); ++(*expr));
+#  587|   
+#  588|         if (**expr == '*')
+# *expr is always non-NULL here because every call to eval_expr_multdiv is
+# with non-NULL and then the call to eval_expr_val before it ensures that it
+# remains non-NULL.
+
+Error: GCC_ANALYZER_WARNING (CWE-476):
+glibc-2.43.9000-94-g4b5a74412e/sysdeps/unix/sysv/linux/semctl.c: scope_hint: In function ‘semid64_to_ksemid64’
+glibc-2.43.9000-94-g4b5a74412e/sysdeps/unix/sysv/linux/semctl.c:68:26: warning[-Wanalyzer-null-dereference]: dereference of NULL ‘semid64’
+#   66|   		     struct kernel_semid64_ds *ksemid)
+#   67|   {
+#   68|->   ksemid->sem_perm       = semid64->sem_perm;
+#   69|     ksemid->sem_otime      = semid64->sem_otime;
+#   70|     ksemid->sem_otime_high = semid64->sem_otime >> 32;
+# semid64 comes from the user in the form of a union field that *must* be
+# non-NULL for IPC_STAT and IPC_SET values of op.
