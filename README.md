@@ -1,7 +1,7 @@
 # known-false-positives
 
 OpenScanHub now automatically suppresses findings recorded in this repository.
-Please put there only findings for which you are sure they are false positives.
+Please record findings here only if you are sure they are false positives.
 Otherwise it could happen that a real security issue will be missed later on.
 
 ## Ignoring true positives findings
@@ -11,9 +11,9 @@ in the meantime, considered as accepted/minimal risk or won't fix decision
 supported by justification, etc...), you can specify them in a file named:
 `${PKG_NAME}/true-positives-ignore.err`
 
-This file has the same working as the `*/ignore.err` file and OpenScanHub will
+This file works the same as the `*/ignore.err` file and OpenScanHub will
 suppress these findings.
-Developers are responsible for maintaining this file updated.
+The developers of `${PKG_NAME}` are responsible for keeping this file updated.
 
 ## Excluding source directories with tests
 Upstream developers of certain projects do not fix static analysis findings
@@ -30,5 +30,5 @@ the source paths to be excluded.  See the following file for an example:
 
 ## Applying filters locally
 To see what remains to be reviewed after suppressing known false positives,
-you can use the csfilter-kfp tool, which is included in the csdiff package
+you can use the `csfilter-kfp` tool, which is included in the csdiff package
 available in Fedora and EPEL.
