@@ -1,0 +1,4 @@
+libs/filesystem/config/
+libs/log/config/
+libs/nowide/config/
+tools/build/src/engine/check_.*.cpp
