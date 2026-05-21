@@ -26,7 +26,7 @@ findings can be specified in a file:
 
 Each line of the file contains an extended regular expression specifying
 the source paths to be excluded.  See the following file for an example:
-`protobuf/exclude-paths.txt`
+`glibc/exclude-paths.txt`
 
 ## Applying filters locally
 To see what remains to be reviewed after suppressing known false positives,
