@@ -1,0 +1,6 @@
+Error: COMPILER_WARNING: [#def17]
+boost_1_90_0/libs/mpi/src/environment.cpp: scope_hint: In static member function ‘static void boost::mpi::environment::abort(int)’
+boost_1_90_0/libs/mpi/src/environment.cpp:193:1: warning: ‘noreturn’ function does return
+# It calls MPI_Abort which does abort the process.
+
+
