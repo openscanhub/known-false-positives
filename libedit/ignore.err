@@ -1,0 +1,12 @@
+Error: GCC_ANALYZER_WARNING (CWE-401): [#def3]
+libedit-20260512-3.1/examples/wtc1.c:70:20: warning[-Wanalyzer-malloc-leak]: leak of ‘opendir(".")’
+libedit-20260512-3.1/examples/wtc1.c:59:19: acquire_memory: allocated here
+libedit-20260512-3.1/examples/wtc1.c:70:20: danger: ‘opendir(".")’ leaks here; was allocated at [(1)](sarif:/runs/0/results/0/codeFlows/0/threadFlows/0/locations/0)
+#   68|   
+#   69|   	/* Find the last word */
+#   70|-> 	for (ptr = lf->cursor -1; !iswspace(*ptr) && ptr > lf->buffer; --ptr)
+#   71|   		continue;
+#   72|   	len = lf->cursor - ++ptr;
+# The result of opendir(".") is stored in a variable dd which is not referenced
+# in this loop.  Regardless of the number of loop iterations, and the number of
+# invocations of continue, dd still points to the DIR structure after the loop.
