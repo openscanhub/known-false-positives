@@ -1,0 +1,52 @@
+Error: GCC_ANALYZER_WARNING (CWE-401):
+bind-9.18.35/build/lib/isc/../../../lib/isc/mem.c:1365:9: warning[-Wanalyzer-malloc-leak]: leak of '<unknown>'
+bind-9.18.35/build/lib/isc/../../../lib/isc/mem.c:1334:1: enter_function: entry to 'isc__mempool_get'
+bind-9.18.35/build/lib/isc/../../../lib/isc/mem.c:1337:9: branch_true: following 'true' branch...
+bind-9.18.35/build/lib/isc/../../../lib/isc/mem.c:1341:12: branch_true: following 'true' branch...
+bind-9.18.35/build/lib/isc/../../../lib/isc/mem.c:1342:28: branch_true: ...to here
+bind-9.18.35/build/lib/isc/../../../lib/isc/mem.c:1351:36: branch_true: following 'true' branch (when 'i < fillcount')...
+bind-9.18.35/build/lib/isc/../../../lib/isc/mem.c:1352:32: branch_true: ...to here
+bind-9.18.35/build/lib/isc/../../../lib/isc/mem.c:1352:32: call_function: calling 'mem_get' from 'isc__mempool_get'
+bind-9.18.35/build/lib/isc/../../../lib/isc/mem.c:1352:32: return_function: returning to 'isc__mempool_get' from 'mem_get'
+bind-9.18.35/build/lib/isc/../../../lib/isc/mem.c:1353:25: call_function: calling 'mem_getstats' from 'isc__mempool_get'
+bind-9.18.35/build/lib/isc/../../../lib/isc/mem.c:1353:25: return_function: returning to 'isc__mempool_get' from 'mem_getstats'
+bind-9.18.35/build/lib/isc/../../../lib/isc/mem.c:1351:36: branch_true: following 'true' branch (when 'i < fillcount')...
+bind-9.18.35/build/lib/isc/../../../lib/isc/mem.c:1352:32: branch_true: ...to here
+bind-9.18.35/build/lib/isc/../../../lib/isc/mem.c:1352:32: call_function: calling 'mem_get' from 'isc__mempool_get'
+bind-9.18.35/build/lib/isc/../../../lib/isc/mem.c:1352:32: return_function: returning to 'isc__mempool_get' from 'mem_get'
+bind-9.18.35/build/lib/isc/../../../lib/isc/mem.c:1353:25: call_function: calling 'mem_getstats' from 'isc__mempool_get'
+bind-9.18.35/build/lib/isc/../../../lib/isc/mem.c:1353:25: return_function: returning to 'isc__mempool_get' from 'mem_getstats'
+bind-9.18.35/build/lib/isc/../../../lib/isc/mem.c:1351:36: branch_false: following 'false' branch (when 'i >= fillcount')...
+bind-9.18.35/build/lib/isc/../../../lib/isc/mem.c:1360:9: branch_false: ...to here
+bind-9.18.35/build/lib/isc/../../../lib/isc/mem.c:1361:9: branch_true: following 'true' branch (when 'item' is non-NULL)...
+bind-9.18.35/build/lib/isc/../../../lib/isc/mem.c:1363:24: branch_true: ...to here
+bind-9.18.35/build/lib/isc/../../../lib/isc/mem.c:1365:9: danger: '<unknown>' leaks here; was allocated at [(30)](sarif:/runs/0/results/0/codeFlows/0/threadFlows/0/locations/29)
+# 1363|   	mpctx->items = item->next;
+# 1364|   
+# 1365|-> 	INSIST(mpctx->freecount > 0);
+# 1366|   	mpctx->freecount--;
+# 1367|   	mpctx->gets++;
+
+Error: CPPCHECK_WARNING (CWE-476):
+bind-9.18.35/lib/isc/jemalloc_shim.h:46: warning[nullPointerOutOfMemory]: If memory allocation fails, then there is a possible null pointer dereference: si
+#   44|   	INSIST(si != NULL);
+#   45|   
+#   46|-> 	si->size = size;
+#   47|   	ptr = &si[1];
+#   48|   
+
+Error: CPPCHECK_WARNING (CWE-590):
+bind-9.18.35/lib/isc/jemalloc_shim.h:56: error[autovarInvalidDeallocation]: Deallocation of an auto-variable ([) results in undefined behaviour.
+#   54|   	size_info *si = &(((size_info *)ptr)[-1]);
+#   55|   
+#   56|-> 	free(si);
+#   57|   }
+#   58|   
+
+Error: CPPCHECK_WARNING (CWE-401):
+bind-9.18.35/lib/isc/jemalloc_shim.h:72: error[memleakOnRealloc]: Common realloc mistake: 'si' nulled but not freed upon failure
+#   70|   	UNUSED(flags);
+#   71|   
+#   72|-> 	si = realloc(si, size + sizeof(*si));
+#   73|   	INSIST(si != NULL);
+#   74|   
