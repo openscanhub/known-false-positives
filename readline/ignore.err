@@ -1,0 +1,324 @@
+Error: COMPILER_WARNING (CWE-569):
+readline-8.3/bind.c: scope_hint: In function ‘_rl_skip_to_delim’
+readline-8.3/bind.c:1566:29: warning[-Wparentheses]: suggest parentheses around assignment used as truth value
+# 1566 |   for (i = start,passc = 0; c = string[i]; i++)
+#      |                             ^
+# 1564|     int i, c, passc;
+# 1565|   
+# 1566|->   for (i = start,passc = 0; c = string[i]; i++)
+# 1567|       {
+# 1568|         if (passc)
+# Upstream coding style.
+
+Error: COMPILER_WARNING (CWE-569):
+readline-8.3/bind.c: scope_hint: In function ‘rl_function_dumper’
+readline-8.3/bind.c:2810:15: warning[-Wparentheses]: suggest parentheses around assignment used as truth value
+# 2810 |   for (i = 0; name = names[i]; i++)
+#      |               ^~~~
+# 2808|     fprintf (rl_outstream, "\n");
+# 2809|   
+# 2810|->   for (i = 0; name = names[i]; i++)
+# 2811|       rl_print_keybinding (name, _rl_keymap, print_readably);
+# 2812|   
+# Upstream coding style.
+
+Error: COMPILER_WARNING (CWE-457):
+readline-8.3/complete.c: scope_hint: In function ‘print_filename’
+readline-8.3/complete.c:1101:22: warning[-Wmaybe-uninitialized]: ‘printed_len’ may be used uninitialized
+# 1101 |           printed_len++;
+#      |           ~~~~~~~~~~~^~
+readline-8.3/complete.c:994:7: note: ‘printed_len’ was declared here
+#  994 |   int printed_len, extension_char, slen, tlen;
+#      |       ^~~~~~~~~~~
+# 1099|   	{
+# 1100|   	  putc (extension_char, rl_outstream);
+# 1101|-> 	  printed_len++;
+# 1102|   	}
+# 1103|       }
+# It is initialized at line 1002 as `printed_len = fnprint (to_print, prefix_bytes, to_print);`.
+
+Error: GCC_ANALYZER_WARNING (CWE-457):
+readline-8.3/complete.c: scope_hint: In function ‘print_filename’
+readline-8.3/complete.c:1105:10: warning[-Wanalyzer-use-of-uninitialized-value]: use of uninitialized value ‘printed_len’
+# 1103|       }
+# 1104|   
+# 1105|->   return printed_len;
+# 1106|   }
+# 1107|   
+# It is initialized at line 1002 as `printed_len = fnprint (to_print, prefix_bytes, to_print);`.
+
+Error: GCC_ANALYZER_WARNING (CWE-476):
+readline-8.3/complete.c: scope_hint: In function ‘_rl_find_completion_word’
+readline-8.3/complete.c:1171:51: warning[-Wanalyzer-null-dereference]: dereference of NULL ‘rl_line_buffer’
+# 1169|   	     quote.  If you don't like this, take out the check on the value
+# 1170|   	     of quote_char. */
+# 1171|-> 	  if (quote_char != '\'' && rl_line_buffer[scan] == '\\')
+# 1172|   	    {
+# 1173|   	      pass_next = 1;
+# It is initialized at line 1311 by `readline_initialize_everything()` function in `readline.c`.
+
+Error: COMPILER_WARNING (CWE-569):
+readline-8.3/complete.c: scope_hint: In function ‘_rl_find_completion_word’
+readline-8.3/complete.c:1209:14: warning[-Wparentheses]: suggest parentheses around assignment used as truth value
+# 1209 |       while (rl_point = MB_PREVCHAR (rl_line_buffer, rl_point, MB_FIND_ANY))
+#      |              ^~~~~~~~
+# 1207|            completion, so use the word break characters to find the
+# 1208|            substring on which to complete. */
+# 1209|->       while (rl_point = MB_PREVCHAR (rl_line_buffer, rl_point, MB_FIND_ANY))
+# 1210|   	{
+# 1211|   	  scan = rl_line_buffer[rl_point];
+# Upstream coding style.
+
+Error: CPPCHECK_WARNING (CWE-562):
+readline-8.3/complete.c:1337: error[autoVariables]: Address of local auto-variable assigned to a function parameter.
+# 1335|   	{
+# 1336|   	  xfree (matches[i]);
+# 1337|-> 	  matches[i] = (char *)&dead_slot;
+# 1338|   	}
+# 1339|         else
+# This code is marking duplicate entries in the list with a temporary `dead_slot` variable. The function parameter gets deallocated on return from the function. See the call to this function in `postprocess_matches()` function.
+
+Error: COMPILER_WARNING (CWE-457):
+readline-8.3/complete.c: scope_hint: In function ‘rl_complete_internal’
+readline-8.3/complete.c:2178:14: warning[-Wmaybe-uninitialized]: ‘tlen’ may be used uninitialized
+# 2178 |           if (mlen >= tlen)
+#      |              ^
+readline-8.3/complete.c:2077:7: note: ‘tlen’ was declared here
+# 2077 |   int tlen, mlen, saved_last_completion_failed;
+#      |       ^~~~
+# 2176|   	{
+# 2177|   	  mlen = *matches[0] ? strlen (matches[0]) : 0;
+# 2178|-> 	  if (mlen >= tlen)
+# 2179|   	    insert_match (matches[0], start, matches[1] ? MULT_MATCH : SINGLE_MATCH, &quote_char);
+# 2180|   	}
+# It is initialized at line 2124 as `tlen = strlen (text);`.
+
+Error: COMPILER_WARNING (CWE-569):
+readline-8.3/complete.c: scope_hint: In function ‘rl_completion_matches’
+readline-8.3/complete.c:2330:10: warning[-Wparentheses]: suggest parentheses around assignment used as truth value
+# 2330 |   while (string = (*entry_function) (text, matches))
+#      |          ^~~~~~
+# 2328|     match_list[1] = (char *)NULL;
+# 2329|   
+# 2330|->   while (string = (*entry_function) (text, matches))
+# 2331|       {
+# 2332|         if (RL_SIG_RECEIVED ())
+# Upstream coding style.
+
+Error: COMPILER_WARNING (CWE-569):
+readline-8.3/complete.c: scope_hint: In function ‘rl_username_completion_function’
+readline-8.3/complete.c:2399:10: warning[-Wparentheses]: suggest parentheses around assignment used as truth value
+# 2399 |   while (entry = getpwent ())
+#      |          ^~~~~
+# 2397|       }
+# 2398|   
+# 2399|->   while (entry = getpwent ())
+# 2400|       {
+# 2401|         /* Null usernames should result in all users as possible completions. */
+# Upstream coding style.
+
+Error: COMPILER_WARNING (CWE-457):
+readline-8.3/display.c: scope_hint: In function ‘rl_redisplay’
+readline-8.3/display.c:1492:42: warning[-Wmaybe-uninitialized]: ‘physpos’ may be used uninitialized
+# 1492 |                 _rl_last_c_pos = physpos + WRAP_OFFSET (cursor_linenum, wrap_offset);
+#      |                                          ^
+readline-8.3/display.c:1477:19: note: ‘physpos’ was declared here
+# 1477 |               int physpos;
+#      |                   ^~~~~~~
+# 1490|   		 for invisible characters. */
+# 1491|   	      if ((mb_cur_max == 1 || rl_byte_oriented) && cursor_linenum == prompt_last_screen_line)
+# 1492|-> 		_rl_last_c_pos = physpos + WRAP_OFFSET (cursor_linenum, wrap_offset);
+# 1493|   	    }
+# 1494|   
+# It is initialized as `physpos = _rl_last_c_pos - WRAP_OFFSET (_rl_last_v_pos, visible_wrap_offset);`.
+
+Error: COMPILER_WARNING (CWE-569):
+readline-8.3/histexpand.c: scope_hint: In function ‘get_history_event’
+readline-8.3/histexpand.c:212:25: warning[-Wparentheses]: suggest parentheses around assignment used as truth value
+#  212 |   for (local_index = i; c = string[i]; i++)
+#      |                         ^
+#  210|   
+#  211|     /* Only a closing `?' or a newline delimit a substring search string. */
+#  212|->   for (local_index = i; c = string[i]; i++)
+#  213|       {
+#  214|   #if defined (HANDLE_MULTIBYTE)
+# Upstream coding style.
+
+Error: COMPILER_WARNING (CWE-563):
+readline-8.3/histfile.c: scope_hint: In function ‘history_truncate_file’
+readline-8.3/histfile.c:524:49: warning[-Wunused-but-set-variable]: variable ‘r’ set but not used
+#  524 |   int file, chars_read, rv, orig_lines, exists, r;
+#      |                                                 ^
+#  522|   {
+#  523|     char *buffer, *filename, *tempname, *bp, *bp1;		/* bp1 == bp+1 */
+#  524|->   int file, chars_read, rv, orig_lines, exists, r;
+#  525|     struct stat finfo, nfinfo;
+#  526|     size_t file_size;
+# Upstream coding style to catch return value in a variable.
+
+Error: GCC_ANALYZER_WARNING (CWE-1341):
+readline-8.3/histfile.c: scope_hint: In function ‘history_truncate_file’
+readline-8.3/histfile.c:668:22: warning[-Wanalyzer-fd-double-close]: double ‘close’ of file descriptor ‘open(history_tempfile(history_filename(fname)), 577, 384)’
+readline-8.3/histfile.c:102: included_from: Included from here.
+#  666|   	}
+#  667|   
+#  668|->       if (rv == 0 && close (file) < 0)
+#  669|   	rv = errno;
+#  670|       }
+# If `fstat()` in the previous if condition fails, `rv` variable would be non-zero. So, this condition would not be executed.
+
+Error: COMPILER_WARNING (CWE-569):
+readline-8.3/histsearch.c: scope_hint: In function ‘_hs_history_patsearch’
+readline-8.3/histsearch.c:258:7: warning[-Wparentheses]: suggest parentheses around assignment used as truth value
+#  258 |   if (unescaped_backslash = (string[ret] == '\\'))
+#      |       ^~~~~~~~~~~~~~~~~~~
+#  256|     /* fnmatch is required to reject a pattern that ends with an unescaped
+#  257|        backslash */
+#  258|->   if (unescaped_backslash = (string[ret] == '\\'))
+#  259|       {
+#  260|         while (ret > 0 && string[--ret] == '\\')
+# Upstream coding style.
+
+Error: COMPILER_WARNING (CWE-569):
+readline-8.3/input.c: scope_hint: In function ‘rl_read_key’
+readline-8.3/input.c:794:11: warning[-Wparentheses]: suggest parentheses around assignment used as truth value
+#  794 |       if (c = _rl_next_macro_key ())
+#      |           ^
+#  792|       {
+#  793|         /* If input is coming from a macro, then use that. */
+#  794|->       if (c = _rl_next_macro_key ())
+#  795|   	return ((unsigned char)c);
+#  796|   
+# Upstream coding style.
+
+Error: COMPILER_WARNING (CWE-563):
+readline-8.3/isearch.c: scope_hint: In function ‘rl_search_history’
+readline-8.3/isearch.c:910:7: warning[-Wunused-but-set-variable]: variable ‘c’ set but not used
+#  910 |   int c, r;
+#      |       ^
+#  908|   {
+#  909|     _rl_search_cxt *cxt;		/* local for now, but saved globally */
+#  910|->   int c, r;
+#  911|   
+#  912|     RL_SETSTATE(RL_STATE_ISEARCH);
+# Upstream coding style to catch return value in a variable.
+
+Error: COMPILER_WARNING (CWE-569):
+readline-8.3/misc.c: scope_hint: In function ‘_rl_revert_previous_lines’
+readline-8.3/misc.c:491:11: warning[-Wparentheses]: suggest parentheses around assignment used as truth value
+#  491 |       if (ul = (UNDO_LIST *)entry->data)
+#      |           ^~
+#  489|     while (entry)
+#  490|       {
+#  491|->       if (ul = (UNDO_LIST *)entry->data)
+#  492|   	{
+#  493|   	  if (ul == saved_undo_list)
+# Upstream coding style.
+
+Error: COMPILER_WARNING (CWE-569):
+readline-8.3/misc.c: scope_hint: In function ‘rl_clear_history’
+readline-8.3/misc.c:551:11: warning[-Wparentheses]: suggest parentheses around assignment used as truth value
+#  551 |       if (ul = (UNDO_LIST *)hent->data)
+#      |           ^~
+#  549|       {
+#  550|         hent = hlist[i];
+#  551|->       if (ul = (UNDO_LIST *)hent->data)
+#  552|   	{
+#  553|   	  if (ul == saved_undo_list)
+# Upstream coding style.
+
+Error: COMPILER_WARNING (CWE-563):
+readline-8.3/parens.c: scope_hint: In function ‘rl_insert_close’
+readline-8.3/parens.c:115:36: warning[-Wunused-but-set-variable]: variable ‘ready’ set but not used
+#  115 |       int orig_point, match_point, ready;
+#      |                                    ^~~~~
+#  113|       {
+#  114|   #if defined (HAVE_SELECT)
+#  115|->       int orig_point, match_point, ready;
+#  116|         struct timeval timer;
+#  117|         fd_set readfds;
+# Upstream coding style to catch return value of a function.
+
+Error: COMPILER_WARNING (CWE-563):
+readline-8.3/readline.c: scope_hint: In function ‘readline_internal_char’
+readline-8.3/readline.c:578:20: warning[-Wunused-but-set-variable]: variable ‘r’ set but not used
+#  578 |   int c, code, lk, r;
+#      |                    ^
+#  576|   {
+#  577|     static int lastc, eof_found;
+#  578|->   int c, code, lk, r;
+#  579|     static procenv_t olevel;
+#  580|   
+# Upstream coding style to catch return value of a function.
+
+Error: COMPILER_WARNING (CWE-563):
+readline-8.3/signals.c: scope_hint: In function ‘rl_set_signals’
+readline-8.3/signals.c:422:25: warning[-Wunused-variable]: unused variable ‘oset’
+#  422 |   static sigset_t bset, oset;
+#      |                         ^~~~
+#  420|   #if defined (HAVE_POSIX_SIGNALS)
+#  421|     static int sigmask_set = 0;
+#  422|->   static sigset_t bset, oset;
+#  423|   #endif
+#  424|   
+# It is used if `HAVE_POSIX_SIGNALS` is true. I do not know why this warning is reported.
+
+Error: COMPILER_WARNING:
+readline-8.3/text.c: scope_hint: In function ‘rl_insert_text’
+readline-8.3/text.c:101:3: warning[-Wstringop-truncation]: ‘strncpy’ output truncated before terminating nul copying as many bytes from a string as its length
+#  101 |   strncpy (rl_line_buffer + rl_point, string, l);
+#      |   ^
+readline-8.3/text.c:91:29: note: length computed here
+#   91 |   l = (string && *string) ? strlen (string) : 0;
+#      |                             ^~~~~~~~~~~~~~~
+#   99|       rl_line_buffer[i + l] = rl_line_buffer[i];
+#  100|   
+#  101|->   strncpy (rl_line_buffer + rl_point, string, l);
+#  102|   
+#  103|     /* Remember how to undo this if we aren't undoing something. */
+# The array gets NULL terminated later. It is a false positive generated by GCC.
+
+Error: COMPILER_WARNING (CWE-569):
+readline-8.3/tilde.c: scope_hint: In function ‘tilde_expand’
+readline-8.3/tilde.c:188:7: warning[-Wparentheses]: suggest parentheses around assignment used as truth value
+#  188 |   if (result = strchr (string, '~'))
+#      |       ^~~~~~
+#  186|   
+#  187|     result_index = result_size = 0;
+#  188|->   if (result = strchr (string, '~'))
+#  189|       result = (char *)xmalloc (result_size = (strlen (string) + 16));
+#  190|     else
+# Upstream coding style.
+
+Error: CPPCHECK_WARNING (CWE-457):
+readline-8.3/undo.c:156: warning[uninitvar]: Uninitialized variable: roving
+#  154|         else
+#  155|   	{
+#  156|-> 	  roving->next = c;
+#  157|   	  roving = roving->next;
+#  158|   	}
+# if `new == 0` then `roving` variable gets initialized in the first iteration.
+
+Error: COMPILER_WARNING (CWE-563):
+readline-8.3/vi_mode.c: scope_hint: In function ‘rl_vi_fword’
+readline-8.3/vi_mode.c:625:7: warning[-Wunused-but-set-variable]: variable ‘opoint’ set but not used
+#  625 |   int opoint;
+#      |       ^~~~~~
+#  623|   rl_vi_fword (int count, int ignore)
+#  624|   {
+#  625|->   int opoint;
+#  626|   
+#  627|     while (count-- && rl_point < (rl_end - 1))
+# Upstream coding style to catch return value of a function. It is a reference to old point.
+
+Error: COMPILER_WARNING:
+readline-8.3/vi_mode.c: scope_hint: In function ‘rl_vi_change_char’
+readline-8.3/vi_mode.c:2124:7: warning[-Wstringop-truncation]: ‘strncpy’ output may be truncated copying 16 bytes from a string of length 16
+# 2124 |       strncpy (mb, _rl_vi_last_replacement, MB_LEN_MAX);
+#      |       ^
+# 2122|     if (_rl_vi_redoing)
+# 2123|       {
+# 2124|->       strncpy (mb, _rl_vi_last_replacement, MB_LEN_MAX);
+# 2125|         c = (unsigned char)_rl_vi_last_replacement[0];	/* XXX */
+# 2126|         mb[MB_LEN_MAX] = '\0';
+# This would copy all the non-NULL bytes. The array gets NULL terminated later. It is a false positive generated by GCC.
