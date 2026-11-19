@@ -1,0 +1,48 @@
+libedit-20260512-3.1/src/readline.c:1352:12: warning[-Wanalyzer-out-of-bounds]: stack-based buffer under-read
+libedit-20260512-3.1/src/readline.c:1302:12: branch_false: following 'false' branch...
+libedit-20260512-3.1/src/readline.c:1304:9: branch_false: ...to here
+libedit-20260512-3.1/src/readline.c:1305:12: branch_false: following 'false' branch...
+libedit-20260512-3.1/src/readline.c:1310:19: branch_false: ...to here
+libedit-20260512-3.1/src/readline.c:1310:12: branch_false: following 'false' branch (when 'tp' is non-NULL)...
+libedit-20260512-3.1/src/readline.c:1310:12: branch_false: ...to here
+libedit-20260512-3.1/src/readline.c:1318:28: branch_true: following 'true' branch...
+libedit-20260512-3.1/src/readline.c:1319:39: branch_true: ...to here
+libedit-20260512-3.1/src/readline.c:1349:12: branch_false: following 'false' branch (when 'ret == 0')...
+libedit-20260512-3.1/src/readline.c:1351:25: branch_false: ...to here
+libedit-20260512-3.1/src/readline.c:1352:12: danger: out-of-bounds read at byte -1 but 'buf' starts at byte 0
+# 1350|   		goto out3;
+# 1351|   	cp = buf + left - 1;
+# 1352|-> 	if(*cp != '\n')
+# 1353|   		cp++;
+# 1354|   	for(;;) {
+# The underread can happen only if left is nonpositive.  When the loop on lines
+# 1317 to 1349 exits, one of the following is true:
+# - ret is nonzero (== errno): then control went to out3 on line 1350
+# - left was set to the return value of fread() and is:
+#   - negative: then ferror() returns true, so ret is nonzero; see above
+#   - zero: then left is set to sizeof(buf) == 4096, so it is positive
+#   - positive: then underread does not happen
+
+libedit-20260512-3.1/src/readline.c:1356:29: warning[-Wanalyzer-out-of-bounds]: stack-based buffer under-read
+libedit-20260512-3.1/src/readline.c:1302:12: branch_false: following 'false' branch...
+libedit-20260512-3.1/src/readline.c:1304:9: branch_false: ...to here
+libedit-20260512-3.1/src/readline.c:1305:12: branch_false: following 'false' branch...
+libedit-20260512-3.1/src/readline.c:1310:19: branch_false: ...to here
+libedit-20260512-3.1/src/readline.c:1310:12: branch_false: following 'false' branch (when 'tp' is non-NULL)...
+libedit-20260512-3.1/src/readline.c:1310:12: branch_false: ...to here
+libedit-20260512-3.1/src/readline.c:1318:28: branch_true: following 'true' branch...
+libedit-20260512-3.1/src/readline.c:1319:39: branch_true: ...to here
+libedit-20260512-3.1/src/readline.c:1349:12: branch_false: following 'false' branch (when 'ret == 0')...
+libedit-20260512-3.1/src/readline.c:1351:25: branch_false: ...to here
+libedit-20260512-3.1/src/readline.c:1352:11: branch_false: following 'false' branch...
+libedit-20260512-3.1/src/readline.c:1352:11: branch_false: ...to here
+libedit-20260512-3.1/src/readline.c:1355:24: branch_true: following 'true' branch...
+libedit-20260512-3.1/src/readline.c:1356:29: branch_true: ...to here
+libedit-20260512-3.1/src/readline.c:1356:29: danger: out-of-bounds read at byte -2 but 'buf' starts at byte 0
+# 1354|   	for(;;) {
+# 1355|   		while (--cp >= buf) {
+# 1356|-> 			if (*cp == '\n') {
+# 1357|   				if (--nlines == 0) {
+# 1358|   					if (++cp >= buf + sizeof(buf)) {
+# Line 1355 guarantees that cp >= buf, so reading buf[-2] through *cp is
+# impossible
